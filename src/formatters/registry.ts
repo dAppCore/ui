@@ -53,7 +53,10 @@ export function getFormatter(name: string): Formatter | undefined {
  * Useful for documentation surfaces and tooling.
  */
 export function listFormatters(): string[] {
-  return Array.from(registry.keys()).sort();
+  // Explicit comparator — Sonar's S2871 flags bare .sort() because the
+  // default UTF-16-code-unit ordering surprises with mixed-case or
+  // Unicode keys. localeCompare gives deterministic locale-aware order.
+  return Array.from(registry.keys()).sort((a, b) => a.localeCompare(b));
 }
 
 /**
