@@ -23,7 +23,8 @@
     "./structural": "./src/structural/index.js",
     "./primitives": "./src/primitives/index.js",
     "./table": "./src/table/index.js",
-    "./crypto": "./src/crypto/index.js"
+    "./crypto": "./src/crypto/index.js",
+    "./forms": "./src/forms/index.js"
   },
   "files": [
     "index.js",

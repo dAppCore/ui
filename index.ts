@@ -18,3 +18,4 @@
 
 export * from './src/formatters/index.js';
 export * from './src/crypto/index.js';
+export * from './src/forms/index.js';
