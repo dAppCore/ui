@@ -11,7 +11,7 @@ export default defineConfig({
     // form and Web Component tests need.
     environment: 'happy-dom',
     globals: false,
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.ts', 'src/**/*_example_test.ts'],
     // Permissive on purpose: lets src/**/*.test.ts use `?raw` imports
     // for any CSS file across the lib. Later utils/elements tasks rely
     // on this; tightening will break them.
