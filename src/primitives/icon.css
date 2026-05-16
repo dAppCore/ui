@@ -1,0 +1,29 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* @dappcore/ui — <core-icon> default styles. */
+
+core-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  --core-icon-size: 16px;
+  --core-icon-color: currentColor;
+}
+
+core-icon[size="xs"] { --core-icon-size: 12px; }
+core-icon[size="sm"] { --core-icon-size: 14px; }
+core-icon[size="md"] { --core-icon-size: 16px; }
+core-icon[size="lg"] { --core-icon-size: 20px; }
+core-icon[size="xl"] { --core-icon-size: 24px; }
+
+core-icon [part="base"] {
+  display: inline-flex;
+  width: var(--core-icon-size);
+  height: var(--core-icon-size);
+  color: var(--core-icon-color);
+}
+
+core-icon [part="base"] > svg {
+  width: 100%;
+  height: 100%;
+}
