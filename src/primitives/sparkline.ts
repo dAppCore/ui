@@ -1,6 +1,6 @@
 // SPDX-Licence-Identifier: EUPL-1.2
 // New for @dappcore/ui v0.5 — no upstream in core/ide.
-import { html, svg, type SVGTemplateResult } from 'lit';
+import { html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { CoreElement } from './_shared/light-dom';
@@ -10,17 +10,18 @@ export type SparklineKind = 'line' | 'area' | 'bars';
 const VIEW_W = 100;
 const VIEW_H = 32;
 
-// Lit's `svg` template tag is the documented way to interpolate SVG
-// fragments into an outer `<svg>` host. In real browsers it works
-// correctly; happy-dom (the test env) however strips the `<?lit$…?>`
-// marker comments that Lit emits inside SVG elements, which means
-// dynamic children of an `html`<svg>${svg`<path>`}</svg>`` template
-// silently disappear. To keep tests deterministic across environments
-// we build the inner shape as a markup string and inject it through
-// `unsafeHTML`. The `svg` tag + `SVGTemplateResult` type are still
-// imported and exposed via `_renderShape` so consumers who target
-// real browsers can swap render strategies without re-typing the
-// shape generator.
+/**
+ * Escape characters that would let a consumer-supplied attribute value
+ * break out of its quoted context inside `unsafeHTML`-injected markup.
+ * Used for the `width` and `height` attribute interpolations.
+ */
+function escapeAttr(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
 
 /**
  * `<core-sparkline>` — true sparkline data viz primitive (no axes, no
@@ -43,6 +44,14 @@ const VIEW_H = 32;
  * Slots: default — alternative to `points`: <data value="...">
  * Parts: base (the svg), track, line, area, marker
  * Vars:  --core-sparkline-{stroke, stroke-width, fill, marker-size, track-color}
+ *
+ * Under happy-dom 15.x, Lit processing-instruction markers
+ * (`<?lit$...?>`) are dropped by the SVG XML parser, so dynamic content
+ * inside `` html`<svg>${dynamic}</svg>` `` renders empty. We work
+ * around this by building the SVG content as a raw string and injecting
+ * via `unsafeHTML()`. Consumer-supplied attribute values are escaped
+ * via `escapeAttr()` before interpolation to prevent injection.
+ * Revisit when happy-dom 16+ ships with PI-preserving SVG parsing.
  */
 @customElement('core-sparkline')
 export class CoreSparkline extends CoreElement {
@@ -90,34 +99,9 @@ export class CoreSparkline extends CoreElement {
   }
 
   /**
-   * Source-form representation of the inner shape using Lit's `svg`
-   * template tag. Returned by reference from `render()` only when the
-   * host environment preserves marker comments inside SVG; happy-dom
-   * does not, so `render()` currently routes through `_shapeMarkup`.
-   */
-  private _renderShape(pts: Array<[number, number]>): SVGTemplateResult | null {
-    if (pts.length === 0) return null;
-    if (this.kind === 'bars') {
-      const barWidth = Math.max(1, VIEW_W / pts.length - 1);
-      return svg`${pts.map(([x, y]) => svg`<rect
-        part="marker"
-        x=${x - barWidth / 2}
-        y=${y}
-        width=${barWidth}
-        height=${VIEW_H - y}
-      ></rect>`)}`;
-    }
-    if (this.kind === 'area') {
-      return svg`<path part="area" d=${this._areaPath(pts)}></path>
-        <path part="line" d=${this._linePath(pts)}></path>`;
-    }
-    return svg`<path part="line" d=${this._linePath(pts)}></path>`;
-  }
-
-  /**
-   * Active render-path serialiser — produces the same SVG output as
-   * `_renderShape`, but as raw markup that survives happy-dom's
-   * comment-stripping in SVG content (see module header).
+   * Active render-path serialiser — produces the SVG inner shape as raw
+   * markup that survives happy-dom's comment-stripping in SVG content
+   * (see module header).
    */
   private _shapeMarkup(pts: Array<[number, number]>): string {
     if (pts.length === 0) return '';
@@ -143,13 +127,9 @@ export class CoreSparkline extends CoreElement {
   override render() {
     const values = this._readPoints();
     const pts = this._project(values);
-    // Keep `_renderShape` reachable so the source-form template builder
-    // isn't tree-shaken; it's the documented forward-compat path for
-    // environments without the happy-dom marker bug (see module header).
-    void this._renderShape;
-    const style =
-      `${this.width ? `width: ${this.width};` : ''}` +
-      `${this.height ? `height: ${this.height};` : ''}`;
+    const widthStyle = this.width ? `width: ${escapeAttr(this.width)};` : '';
+    const heightStyle = this.height ? `height: ${escapeAttr(this.height)};` : '';
+    const style = `${widthStyle}${heightStyle}`;
     const inner =
       `<rect part="track" x="0" y="0" width="${VIEW_W}" height="${VIEW_H}"></rect>` +
       this._shapeMarkup(pts);

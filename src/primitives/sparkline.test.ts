@@ -60,4 +60,22 @@ describe('<core-sparkline>', () => {
     await (el as any).updateComplete;
     expect(el.querySelector('svg[part="base"]')).not.toBeNull();
   });
+
+  it('escapes width/height values to prevent attribute injection', async () => {
+    const el = document.createElement('core-sparkline');
+    el.setAttribute('points', '1,2,3');
+    el.setAttribute('width', '100px;" onload="window.__sparkline_pwn=true" data-x="');
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    const svg = el.querySelector('svg[part="base"]') as SVGElement;
+    // Escape worked — no synthesised onload attribute on the SVG.
+    expect(svg.hasAttribute('onload')).toBe(false);
+    // The raw markup carries the escaped form (&quot;) — DOM getAttribute
+    // would decode it back, so we assert against the serialised outerHTML
+    // to verify the escape was applied at injection time.
+    expect(svg.outerHTML).toContain('&quot;');
+    // And the decoded style value still contains the full malicious payload
+    // as inert text (not as parsed attributes).
+    expect(svg.getAttribute('style') ?? '').toContain('onload="window.__sparkline_pwn=true"');
+  });
 });
