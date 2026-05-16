@@ -2,17 +2,6 @@
 // New for @dappcore/ui v0.2 — no upstream in core/ide.
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-function loadStylesheet(href: string): Promise<HTMLLinkElement> {
-  return new Promise((resolve, reject) => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = href;
-    link.onload = () => resolve(link);
-    link.onerror = () => reject(new Error(`failed to load ${href}`));
-    document.head.appendChild(link);
-  });
-}
-
 function readVar(name: string, scope: Element = document.documentElement): string {
   return getComputedStyle(scope).getPropertyValue(name).trim();
 }
@@ -67,9 +56,9 @@ describe('core tokens — brand switching via [data-brand]', () => {
   beforeEach(async () => {
     document.head.innerHTML = '';
     document.body.innerHTML = '';
-    // happy-dom does not follow `@import` directives inside <style> blocks,
-    // so we compose index.css manually from its parts. Real browsers (and
-    // the published index.css consumed via <link>) resolve @import natively.
+    // `?raw` imports return CSS as a literal string — @import directives
+    // inside that string are never resolved by any runtime. Compose the
+    // stylesheet manually by loading each component file in parallel.
     const [tokens, brandHostuk, brandLethean, brandOfm, platformDarwin, platformIos] = await Promise.all([
       import('./tokens.css?raw'),
       import('./brand-hostuk.css?raw'),

@@ -12,9 +12,9 @@ export default defineConfig({
     environment: 'happy-dom',
     globals: false,
     include: ['src/**/*.test.ts'],
-    // Allow CSS imports (incl. `?raw` and `?inline` suffixes) to resolve to
-    // their actual contents rather than being stubbed to empty strings.
-    // Required by src/tokens/tokens.test.ts which loads token CSS via `?raw`.
+    // Permissive on purpose: lets src/**/*.test.ts use `?raw` imports
+    // for any CSS file across the lib. Later utils/elements tasks rely
+    // on this; tightening will break them.
     css: {
       include: [/.+/],
     },
