@@ -77,8 +77,8 @@ export class CoreRail extends CoreElement {
         <a
           part="base"
           href=${this.href}
-          ?aria-current=${this.active ? 'page' : nothing}
-          aria-disabled=${this.disabled ? 'true' : 'false'}
+          aria-current=${this.active ? 'page' : nothing}
+          aria-disabled=${this.disabled ? 'true' : nothing}
           @click=${this._onActivate}
           @keydown=${this._onKeyDown}
         >${inner}</a>
@@ -89,7 +89,7 @@ export class CoreRail extends CoreElement {
         part="base"
         type="button"
         ?disabled=${this.disabled}
-        aria-pressed=${this.active ? 'true' : 'false'}
+        aria-current=${this.active ? 'page' : nothing}
         @click=${this._onActivate}
         @keydown=${this._onKeyDown}
       >${inner}</button>

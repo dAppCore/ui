@@ -66,4 +66,41 @@ describe('<core-rail>', () => {
     expect(el.querySelector('[part="icon-trailing"]')).not.toBeNull();
     expect(el.querySelector('[part="label"]')).not.toBeNull();
   });
+
+  it('renders aria-current="page" on anchor when active', async () => {
+    const el = document.createElement('core-rail');
+    el.setAttribute('href', '/dashboard');
+    el.setAttribute('active', '');
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    const inner = el.querySelector('[part="base"]') as HTMLAnchorElement;
+    expect(inner.getAttribute('aria-current')).toBe('page');
+  });
+
+  it('omits aria-current when anchor is not active', async () => {
+    const el = document.createElement('core-rail');
+    el.setAttribute('href', '/dashboard');
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    const inner = el.querySelector('[part="base"]') as HTMLAnchorElement;
+    expect(inner.hasAttribute('aria-current')).toBe(false);
+  });
+
+  it('renders aria-current="page" on button when active', async () => {
+    const el = document.createElement('core-rail');
+    el.setAttribute('active', '');
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    const inner = el.querySelector('[part="base"]') as HTMLButtonElement;
+    expect(inner.tagName).toBe('BUTTON');
+    expect(inner.getAttribute('aria-current')).toBe('page');
+  });
+
+  it('omits aria-current when button is not active', async () => {
+    const el = document.createElement('core-rail');
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    const inner = el.querySelector('[part="base"]') as HTMLButtonElement;
+    expect(inner.hasAttribute('aria-current')).toBe(false);
+  });
 });
