@@ -1,0 +1,10 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* @dappcore/ui — <core-router> default styles. Structural primitive: no chrome. */
+
+core-router {
+  display: contents;
+}
+
+core-router [part="base"] {
+  display: contents;
+}

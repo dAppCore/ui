@@ -71,6 +71,7 @@ describe('exports smoke test — every CSS subpath loads as raw text', () => {
   it.each([
     'button', 'toggle', 'status-dot', 'pill', 'icon',
     'label', 'card', 'glass', 'window-controls', 'rail', 'sparkline',
+    'router', 'route', 'link',
   ])('primitives/%s.css', async (name) => {
     const css = await import(`../../src/primitives/${name}.css?raw`);
     expect(css.default.length).toBeGreaterThan(0);

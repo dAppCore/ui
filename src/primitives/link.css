@@ -1,0 +1,11 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* @dappcore/ui — <core-link> default styles. Structural primitive: inherits anchor look. */
+
+core-link {
+  display: inline;
+}
+
+core-link a {
+  color: inherit;
+  text-decoration: inherit;
+}

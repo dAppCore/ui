@@ -23,7 +23,13 @@ import { LitElement } from 'lit';
  *   }
  */
 export class CoreElement extends LitElement {
-  protected override createRenderRoot(): HTMLElement {
+  // Lit's base returns `HTMLElement | DocumentFragment`. Default CoreUI
+  // primitives render into the host (light DOM, `HTMLElement` branch), but
+  // structural primitives (e.g. `<core-router>`, `<core-route>`) override
+  // this to return a detached `DocumentFragment` so the host's children
+  // survive Lit's template commits. Widening the return type lets those
+  // overrides typecheck cleanly.
+  protected override createRenderRoot(): HTMLElement | DocumentFragment {
     return this;
   }
 }

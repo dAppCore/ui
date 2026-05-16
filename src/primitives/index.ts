@@ -38,6 +38,9 @@ import './toggle';
 import './rail';
 import './window-controls';
 import './sparkline';
+import './router';
+import './route';
+import './link';
 
 // Re-export classes + types for typed consumers.
 export { CoreStatusDot, type StatusDotState, type StatusDotSize } from './status-dot';
@@ -53,3 +56,9 @@ export {
   CoreWindowControls, type WindowPlatform, type WindowState,
 } from './window-controls';
 export { CoreSparkline, type SparklineKind } from './sparkline';
+export { CoreRouter } from './router';
+export { CoreRoute } from './route';
+export { CoreLink } from './link';
+export {
+  routerContext, type RouterMode, type RouterState,
+} from './_shared/router-context';

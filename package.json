@@ -1,6 +1,6 @@
 {
   "name": "@dappcore/ui",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "CoreUI — brand-neutral Web Component library and design utilities. Lit-based, light DOM, brandable via [data-brand].",
   "type": "module",
   "license": "EUPL-1.2",
@@ -63,7 +63,14 @@
     "./primitives/rail": "./src/primitives/rail.js",
     "./primitives/rail.css": "./src/primitives/rail.css",
     "./primitives/sparkline": "./src/primitives/sparkline.js",
-    "./primitives/sparkline.css": "./src/primitives/sparkline.css"
+    "./primitives/sparkline.css": "./src/primitives/sparkline.css",
+    "./primitives/router": "./src/primitives/router.js",
+    "./primitives/router.css": "./src/primitives/router.css",
+    "./primitives/route": "./src/primitives/route.js",
+    "./primitives/route.css": "./src/primitives/route.css",
+    "./primitives/link": "./src/primitives/link.js",
+    "./primitives/link.css": "./src/primitives/link.css",
+    "./primitives/_shared/router-context": "./src/primitives/_shared/router-context.js"
   },
   "files": [
     "index.js",
