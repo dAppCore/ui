@@ -9,6 +9,9 @@ import { getIcon } from './icons/registry';
 import { registerDefaultIcons } from './icons/defaults';
 
 // Side-effect: register the 12 default icons when this module loads.
+// Trade-off: defeats tree-shaking of unused defaults (~2KB gzipped for
+// the full set). Consumers who want only their own icons can import
+// registerIcon directly from './icons/registry' and skip this module.
 registerDefaultIcons();
 
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string;
@@ -38,7 +41,7 @@ export class CoreIcon extends CoreElement {
   @property({ reflect: true }) size: IconSize = 'md';
   @property({ reflect: true, type: Boolean }) decorative = false;
 
-  override updated(): void {
+  override updated(changed: Map<string, unknown>): void {
     // a11y wiring on the host element (not in render template) so the
     // attributes appear directly on <core-icon>, where AT will see them.
     if (this.decorative) {
@@ -49,6 +52,18 @@ export class CoreIcon extends CoreElement {
       if (!this.hasAttribute('aria-label')) {
         const entry = getIcon(this.name);
         if (entry?.title) this.setAttribute('aria-label', entry.title);
+      }
+    }
+
+    // Size attribute: named sizes (xs/sm/md/lg/xl) are handled by CSS
+    // attribute selectors. Arbitrary lengths (e.g. "20px") need to set
+    // --core-icon-size inline so the CSS picks them up.
+    if (changed.has('size')) {
+      const named = ['xs', 'sm', 'md', 'lg', 'xl'];
+      if (this.size && !named.includes(this.size)) {
+        this.style.setProperty('--core-icon-size', this.size);
+      } else {
+        this.style.removeProperty('--core-icon-size');
       }
     }
   }
@@ -72,6 +87,9 @@ export class CoreIcon extends CoreElement {
       }
       return html`<span part="base"></span>`;
     }
+    // Registry markup is consumer-controlled (via registerIcon).
+    // No sanitisation: it's the consumer's responsibility to not
+    // pass user-supplied SVG into the registry.
     return html`<span part="base">${unsafeHTML(entry.svg)}</span>`;
   }
 }

@@ -87,4 +87,22 @@ describe('<core-icon>', () => {
     await (el as any).updateComplete;
     expect(el.getAttribute('aria-label')).toBe('Custom label');
   });
+
+  it('applies arbitrary size values via inline --core-icon-size style', async () => {
+    const el = document.createElement('core-icon');
+    el.setAttribute('name', 'check');
+    el.setAttribute('size', '20px');
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    expect(el.style.getPropertyValue('--core-icon-size')).toBe('20px');
+  });
+
+  it('does not apply inline size for named size tokens', async () => {
+    const el = document.createElement('core-icon');
+    el.setAttribute('name', 'check');
+    el.setAttribute('size', 'lg');
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    expect(el.style.getPropertyValue('--core-icon-size')).toBe('');
+  });
 });
