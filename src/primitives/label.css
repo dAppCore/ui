@@ -1,0 +1,31 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* @dappcore/ui — <core-label> default styles. */
+
+core-label {
+  display: inline-block;
+
+  --core-label-font-size: 12px;
+  --core-label-fg: var(--core-fg-2);
+  --core-label-gap: 4px;
+  --core-label-required-color: var(--core-danger-500);
+}
+
+core-label[size="sm"] { --core-label-font-size: 11px; }
+core-label[size="md"] { --core-label-font-size: 12px; }
+core-label[size="lg"] { --core-label-font-size: 14px; }
+
+core-label [part="base"] {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--core-label-gap);
+  font-size: var(--core-label-font-size);
+  color: var(--core-label-fg);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+}
+
+core-label [part="required-indicator"] {
+  color: var(--core-label-required-color);
+  font-weight: 600;
+}

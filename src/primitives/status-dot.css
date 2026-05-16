@@ -1,0 +1,56 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* @dappcore/ui — <core-status-dot> default styles. */
+
+core-status-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Defaults — neutral state, md size. */
+  --core-status-dot-size: 8px;
+  --core-status-dot-fill: var(--core-ink-5);
+  --core-status-dot-pulse-duration: 1.6s;
+}
+
+core-status-dot[size="sm"] { --core-status-dot-size: 6px; }
+core-status-dot[size="md"] { --core-status-dot-size: 8px; }
+core-status-dot[size="lg"] { --core-status-dot-size: 10px; }
+
+core-status-dot[state="good"]    { --core-status-dot-fill: var(--core-success-500); }
+core-status-dot[state="warn"]    { --core-status-dot-fill: var(--core-warning-500); }
+core-status-dot[state="bad"]     { --core-status-dot-fill: var(--core-danger-500); }
+core-status-dot[state="info"]    { --core-status-dot-fill: var(--core-info-500); }
+core-status-dot[state="neutral"] { --core-status-dot-fill: var(--core-ink-5); }
+
+core-status-dot [part="base"] {
+  display: inline-block;
+  position: relative;
+  width: var(--core-status-dot-size);
+  height: var(--core-status-dot-size);
+}
+
+core-status-dot [part="indicator"] {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--core-status-dot-fill);
+}
+
+core-status-dot[pulse] [part="indicator"]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--core-status-dot-fill);
+  opacity: 0.5;
+  animation: core-status-dot-pulse var(--core-status-dot-pulse-duration) ease-out infinite;
+}
+
+@keyframes core-status-dot-pulse {
+  0%   { transform: scale(1);   opacity: 0.5; }
+  100% { transform: scale(2.4); opacity: 0;   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  core-status-dot[pulse] [part="indicator"]::after { animation: none; }
+}

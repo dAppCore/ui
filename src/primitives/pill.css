@@ -1,0 +1,72 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* @dappcore/ui — <core-pill> default styles. */
+
+core-pill {
+  display: inline-flex;
+
+  --core-pill-height: 22px;
+  --core-pill-padding-x: 10px;
+  --core-pill-radius: var(--core-radius-pill);
+  --core-pill-bg: var(--core-ink-3);
+  --core-pill-fg: var(--core-fg-2);
+  --core-pill-border-color: var(--core-line-1);
+  --core-pill-font-size: 11.5px;
+}
+
+core-pill[size="sm"] {
+  --core-pill-height: 18px;
+  --core-pill-padding-x: 8px;
+  --core-pill-font-size: 10.5px;
+}
+
+core-pill[state="brand"] {
+  --core-pill-bg: color-mix(in oklch, var(--core-brand-500) 22%, var(--core-ink-2));
+  --core-pill-fg: var(--core-brand-200);
+  --core-pill-border-color: color-mix(in oklch, var(--core-brand-500) 35%, transparent);
+}
+core-pill[state="success"] {
+  --core-pill-bg: color-mix(in oklch, var(--core-success-500) 22%, var(--core-ink-2));
+  --core-pill-fg: var(--core-success-400);
+  --core-pill-border-color: color-mix(in oklch, var(--core-success-500) 35%, transparent);
+}
+core-pill[state="warning"] {
+  --core-pill-bg: color-mix(in oklch, var(--core-warning-500) 22%, var(--core-ink-2));
+  --core-pill-fg: var(--core-warning-400);
+  --core-pill-border-color: color-mix(in oklch, var(--core-warning-500) 35%, transparent);
+}
+core-pill[state="danger"] {
+  --core-pill-bg: color-mix(in oklch, var(--core-danger-500) 22%, var(--core-ink-2));
+  --core-pill-fg: var(--core-danger-400);
+  --core-pill-border-color: color-mix(in oklch, var(--core-danger-500) 35%, transparent);
+}
+core-pill[state="info"] {
+  --core-pill-bg: color-mix(in oklch, var(--core-info-500) 22%, var(--core-ink-2));
+  --core-pill-fg: var(--core-info-400);
+  --core-pill-border-color: color-mix(in oklch, var(--core-info-500) 35%, transparent);
+}
+
+core-pill [part="base"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: var(--core-pill-height);
+  padding: 0 var(--core-pill-padding-x);
+  border-radius: var(--core-pill-radius);
+  background: var(--core-pill-bg);
+  color: var(--core-pill-fg);
+  border: 1px solid var(--core-pill-border-color);
+  font-size: var(--core-pill-font-size);
+  font-weight: 500;
+  letter-spacing: 0.005em;
+}
+
+core-pill [part="icon-leading"]:empty,
+core-pill [part="icon-trailing"]:empty {
+  display: none;
+}
+
+core-pill [part="icon-leading"],
+core-pill [part="icon-trailing"] {
+  display: inline-flex;
+  align-items: center;
+}
