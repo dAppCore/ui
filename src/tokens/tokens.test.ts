@@ -103,3 +103,12 @@ describe('core tokens — brand switching via [data-brand]', () => {
     expect(readVar('--core-brand-name')).toContain('OFM');
   });
 });
+
+describe('tailwind.css — bridge file', () => {
+  it('imports without throwing', async () => {
+    const css = await import('./tailwind.css?raw');
+    expect(css.default).toContain('@theme');
+    expect(css.default).toContain('--color-brand-500');
+    expect(css.default).toContain('var(--core-brand-500)');
+  });
+});

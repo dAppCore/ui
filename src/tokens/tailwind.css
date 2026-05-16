@@ -1,0 +1,81 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* @dappcore/ui — Tailwind v4 @theme bridge. Wraps the core tokens so
+   utility classes (bg-brand-500, rounded-md, font-sans, shadow-2) work
+   natively while [data-brand] / [data-mode] switching still flows
+   through via late-bound var() resolution. */
+
+@import "./index.css";
+
+@theme {
+  /* Brand scale → bg-brand-*, text-brand-*, border-brand-*, ring-brand-* */
+  --color-brand-50:  var(--core-brand-50);
+  --color-brand-100: var(--core-brand-100);
+  --color-brand-200: var(--core-brand-200);
+  --color-brand-300: var(--core-brand-300);
+  --color-brand-400: var(--core-brand-400);
+  --color-brand-500: var(--core-brand-500);
+  --color-brand-600: var(--core-brand-600);
+  --color-brand-700: var(--core-brand-700);
+  --color-brand-800: var(--core-brand-800);
+  --color-brand-900: var(--core-brand-900);
+
+  /* Foreground → text-fg-*, bg-fg-* */
+  --color-fg-0: var(--core-fg-0);
+  --color-fg-1: var(--core-fg-1);
+  --color-fg-2: var(--core-fg-2);
+  --color-fg-3: var(--core-fg-3);
+  --color-fg-4: var(--core-fg-4);
+
+  /* Surface (ink) → bg-ink-* */
+  --color-ink-0: var(--core-ink-0);
+  --color-ink-1: var(--core-ink-1);
+  --color-ink-2: var(--core-ink-2);
+  --color-ink-3: var(--core-ink-3);
+  --color-ink-4: var(--core-ink-4);
+  --color-ink-5: var(--core-ink-5);
+  --color-ink-6: var(--core-ink-6);
+
+  /* Hairlines → border-line-*, bg-line-* */
+  --color-line-1: var(--core-line-1);
+  --color-line-2: var(--core-line-2);
+  --color-line-3: var(--core-line-3);
+
+  /* State colours */
+  --color-success-400: var(--core-success-400);
+  --color-success-500: var(--core-success-500);
+  --color-warning-400: var(--core-warning-400);
+  --color-warning-500: var(--core-warning-500);
+  --color-danger-400:  var(--core-danger-400);
+  --color-danger-500:  var(--core-danger-500);
+  --color-info-400:    var(--core-info-400);
+  --color-info-500:    var(--core-info-500);
+
+  /* Accent tints */
+  --color-gold-300:  var(--core-gold-300);
+  --color-gold-400:  var(--core-gold-400);
+  --color-gold-500:  var(--core-gold-500);
+  --color-gold-600:  var(--core-gold-600);
+  --color-ember-400: var(--core-ember-400);
+  --color-ember-500: var(--core-ember-500);
+  --color-ember-600: var(--core-ember-600);
+
+  /* Radii → rounded-* */
+  --radius-xs:   var(--core-radius-xs);
+  --radius-sm:   var(--core-radius-sm);
+  --radius-md:   var(--core-radius-md);
+  --radius-lg:   var(--core-radius-lg);
+  --radius-xl:   var(--core-radius-xl);
+  --radius-2xl:  var(--core-radius-2xl);
+  --radius-full: var(--core-radius-pill);
+
+  /* Fonts → font-* */
+  --font-sans:    var(--core-font-sans);
+  --font-mono:    var(--core-font-mono);
+  --font-serif:   var(--core-font-serif);
+  --font-display: var(--core-font-display);
+
+  /* Shadows → shadow-* */
+  --shadow-1: var(--core-shadow-1);
+  --shadow-2: var(--core-shadow-2);
+  --shadow-3: var(--core-shadow-3);
+}
