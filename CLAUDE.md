@@ -43,7 +43,7 @@ Mojo: no brand, but brandable with ease. Every brand selection is additive over 
 | Contract | Detail |
 |---|---|
 | Light DOM by default | No Shadow DOM unless backdrop isolation requires it (`<core-dialog>`, `<core-drawer>`, `<core-popover>`, `<core-tooltip>`). Tokens.css inherits through. |
-| `::part()` skinning | Every visually significant internal element has a `part` attribute. Skin layer targets via `::part()`. |
+| Part-based skinning | Every visually significant internal element has a `part="..."` attribute. Skin layers target via standard attribute selectors (`core-button [part="base"]`) — the Shadow-DOM `::part()` pseudo-element is NOT used (primitives are light DOM). |
 | CSS custom properties | Tunables exposed as `--core-<component>-<property>`. Tokens are `--core-*`. Library never hard-codes visual values. |
 | Slot-driven extension | Default slot for content. Named slots for predictable extension points. |
 | Form participation | Inputs use `ElementInternals` for native `<form>` integration. |

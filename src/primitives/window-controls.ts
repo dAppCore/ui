@@ -7,10 +7,10 @@ import { customElement, property } from 'lit/decorators.js';
 import { CoreElement } from './_shared/light-dom';
 import { getPlatform, type Platform } from '../platform/platform';
 
-export type WindowPlatform = 'macos' | 'windows' | 'linux';
+export type WindowPlatform = 'macos' | 'windows' | 'linux' | 'hidden';
 export type WindowState = 'active' | 'inactive';
 
-function detectInitialPlatform(): WindowPlatform | 'hidden' {
+function detectInitialPlatform(): WindowPlatform {
   const p: Platform = getPlatform();
   if (p === 'macos') return 'macos';
   if (p === 'windows') return 'windows';

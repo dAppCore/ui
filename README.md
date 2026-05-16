@@ -93,7 +93,7 @@ plus/minus, info/warning/danger, search). Register your own with
 
 ## Roadmap
 
-See [RFC.md §16](RFC.md#16-roadmap). Currently at **v0.2 — utils foundation** (tokens, colour, math, animation context, dom, a11y, platform, brand). v0.3 ships the seed `<core-data-table>`.
+See [RFC.md §16](RFC.md#16-roadmap). Currently at **v0.5 — primitives layer** (eleven brand-neutral Web Components on top of the v0.2 utils foundation). Next ships the seed `<core-data-table>` per [RFC.md §16](RFC.md#16-roadmap).
 
 ## Licence
 
