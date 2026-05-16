@@ -106,10 +106,10 @@ export class CoreForm extends LitElement {
   @state() private done = false;
 
   private renderedAt = 0;
-  private nonce = '';
+  private submissionNonce = '';
   private idempotencyKey = '';
 
-  protected createRenderRoot(): HTMLElement {
+  protected override createRenderRoot(): HTMLElement {
     return this;
   }
 
@@ -117,7 +117,7 @@ export class CoreForm extends LitElement {
     super.connectedCallback();
     this.renderedAt = performance.now();
     if (this.idempotent) this.idempotencyKey = uuidv7();
-    if (this.hmacBindNonce) this.nonce = uuidv7();
+    if (this.hmacBindNonce) this.submissionNonce = uuidv7();
   }
 
   /** Reset submission state. Lets a previously-submitted form be re-used. */
@@ -126,7 +126,7 @@ export class CoreForm extends LitElement {
     this.done = false;
     this.renderedAt = performance.now();
     if (this.idempotent) this.idempotencyKey = uuidv7();
-    if (this.hmacBindNonce) this.nonce = uuidv7();
+    if (this.hmacBindNonce) this.submissionNonce = uuidv7();
   }
 
   /** Find the inner <form>. Lit slots in light DOM render under `this`. */
@@ -236,7 +236,7 @@ export class CoreForm extends LitElement {
       }
       const data = new FormData(this.form);
       if (this.hmacBindTimestamp) timestamp = Date.now();
-      if (this.hmacBindNonce) nonceForRound = this.nonce;
+      if (this.hmacBindNonce) nonceForRound = this.submissionNonce;
       const tag = await signFormData(cryptoKey, data, {
         timestamp: timestamp || false,
         nonce: nonceForRound || undefined,

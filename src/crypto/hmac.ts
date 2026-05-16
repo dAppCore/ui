@@ -47,7 +47,7 @@ export async function importHmacKey(
         : new Uint8Array(secret);
   return crypto.subtle.importKey(
     'raw',
-    raw,
+    raw as BufferSource,
     { name: 'HMAC', hash: algorithm },
     false,
     ['sign', 'verify'],

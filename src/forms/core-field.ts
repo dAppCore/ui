@@ -54,7 +54,7 @@ export class CoreField extends LitElement {
   /** When set, append the original cleartext length to the encrypted payload (helps debug — never enable in prod). */
   @property({ type: Boolean }) debug = false;
 
-  protected createRenderRoot(): HTMLElement {
+  protected override createRenderRoot(): HTMLElement {
     return this;
   }
 
@@ -152,7 +152,11 @@ async function encryptRsaOaep(key: CryptoKey, plaintext: string): Promise<string
 function base64(bytes: Uint8Array): string {
   let s = '';
   for (const b of bytes) s += String.fromCharCode(b);
-  return typeof btoa !== 'undefined' ? btoa(s) : Buffer.from(s, 'binary').toString('base64');
+  // Browser-only library — btoa is always defined. Was previously
+  // guarded with a Node.Buffer fallback; @dappcore/ui never runs
+  // outside a DOM environment so the fallback was unreachable + the
+  // Buffer global isn't typed under the browser-only tsconfig.
+  return btoa(s);
 }
 
 declare global {
