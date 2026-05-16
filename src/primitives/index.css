@@ -1,0 +1,14 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* @dappcore/ui — primitives default styles aggregator. */
+
+@import "./button.css";
+@import "./toggle.css";
+@import "./status-dot.css";
+@import "./pill.css";
+@import "./icon.css";
+@import "./label.css";
+@import "./card.css";
+@import "./glass.css";
+@import "./window-controls.css";
+@import "./rail.css";
+@import "./sparkline.css";

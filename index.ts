@@ -28,3 +28,4 @@ export * from './src/dom/index.js';
 export * from './src/a11y/index.js';
 export * from './src/platform/index.js';
 export * from './src/brand/index.js';
+export * from './src/primitives/index.js';

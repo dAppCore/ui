@@ -37,6 +37,11 @@ describe('exports smoke test — every package.json subpath imports cleanly', ()
     const m = await import('../../src/brand/index');
     expect(typeof m.getBrand).toBe('function');
   });
+  it('./primitives', async () => {
+    const m = await import('../../src/primitives/index');
+    expect(typeof (m as any).CoreButton).toBe('function');
+    expect(typeof (m as any).registerIcon).toBe('function');
+  });
 });
 
 describe('exports smoke test — every CSS subpath loads as raw text', () => {
@@ -57,6 +62,17 @@ describe('exports smoke test — every CSS subpath loads as raw text', () => {
     'platform-darwin', 'platform-ios',
   ])('tokens/%s.css', async (name) => {
     const css = await import(`../../src/tokens/${name}.css?raw`);
+    expect(css.default.length).toBeGreaterThan(0);
+  });
+  it('primitives/index.css', async () => {
+    const css = await import('../../src/primitives/index.css?raw');
+    expect(css.default).toContain('@import');
+  });
+  it.each([
+    'button', 'toggle', 'status-dot', 'pill', 'icon',
+    'label', 'card', 'glass', 'window-controls', 'rail', 'sparkline',
+  ])('primitives/%s.css', async (name) => {
+    const css = await import(`../../src/primitives/${name}.css?raw`);
     expect(css.default.length).toBeGreaterThan(0);
   });
 });
