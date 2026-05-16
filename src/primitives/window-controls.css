@@ -1,0 +1,107 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* @dappcore/ui — <core-window-controls> default styles. */
+
+core-window-controls {
+  display: inline-flex;
+
+  --core-window-controls-spacing: 8px;
+  --core-window-controls-size: 12px;
+  --core-window-controls-color-close: #ff5f57;
+  --core-window-controls-color-minimise: #febc2e;
+  --core-window-controls-color-maximise: #28c840;
+  --core-window-controls-hover-darken: 0.85;
+}
+
+core-window-controls[platform="hidden"] { display: none; }
+
+core-window-controls [part="base"] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--core-window-controls-spacing);
+  padding: 1px;
+}
+
+core-window-controls [part="control"] {
+  width: var(--core-window-controls-size);
+  height: var(--core-window-controls-size);
+  border: 0.5px solid rgba(0, 0, 0, 0.12);
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+}
+
+core-window-controls [data-action="close"]    { background: var(--core-window-controls-color-close); }
+core-window-controls [data-action="minimise"] { background: var(--core-window-controls-color-minimise); }
+core-window-controls [data-action="maximise"] { background: var(--core-window-controls-color-maximise); }
+
+core-window-controls [part="control"]:hover {
+  filter: brightness(var(--core-window-controls-hover-darken));
+}
+
+core-window-controls[state="inactive"] [part="control"] {
+  background: var(--core-ink-4);
+  filter: none;
+}
+
+/* Windows variant — thin square icons top-right, neutral colour. */
+core-window-controls[platform="windows"] {
+  --core-window-controls-spacing: 0;
+  --core-window-controls-size: 32px;
+}
+core-window-controls[platform="windows"] [part="control"] {
+  width: var(--core-window-controls-size);
+  height: 24px;
+  background: transparent;
+  border-radius: 0;
+  border: 0;
+  color: var(--core-fg-1);
+  position: relative;
+}
+core-window-controls[platform="windows"] [part="control"]:hover {
+  background: var(--core-ink-3);
+  filter: none;
+}
+core-window-controls[platform="windows"] [data-action="close"]:hover {
+  background: var(--core-danger-500);
+  color: var(--core-fg-0);
+}
+core-window-controls[platform="windows"] [data-action="close"]::before    { content: '✕'; }
+core-window-controls[platform="windows"] [data-action="minimise"]::before { content: '–'; }
+core-window-controls[platform="windows"] [data-action="maximise"]::before { content: '☐'; }
+core-window-controls[platform="windows"] [part="control"]::before {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+/* Linux variant — GNOME-style top-right, circular flat. */
+core-window-controls[platform="linux"] {
+  --core-window-controls-spacing: 4px;
+  --core-window-controls-size: 22px;
+}
+core-window-controls[platform="linux"] [part="control"] {
+  width: var(--core-window-controls-size);
+  height: var(--core-window-controls-size);
+  background: var(--core-ink-3);
+  border: 0;
+  color: var(--core-fg-1);
+  position: relative;
+}
+core-window-controls[platform="linux"] [part="control"]:hover {
+  background: var(--core-ink-4);
+  filter: none;
+}
+core-window-controls[platform="linux"] [data-action="close"]::before    { content: '✕'; }
+core-window-controls[platform="linux"] [data-action="minimise"]::before { content: '−'; }
+core-window-controls[platform="linux"] [data-action="maximise"]::before { content: '◻'; }
+core-window-controls[platform="linux"] [part="control"]::before {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
