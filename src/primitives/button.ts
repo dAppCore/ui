@@ -21,6 +21,13 @@ export type ButtonType = 'button' | 'submit' | 'reset';
  *     Add
  *   </core-button>
  *
+ * Click handling is bound to the host (not the inner <button>) so
+ * `el.click()` and bubbled inner clicks route through a single
+ * handler. The handler uses `ev.target !== this` to defer real-user
+ * clicks on the inner button to the browser's native form-submission
+ * semantics, and only synthesises `requestSubmit()` when the host
+ * itself is the click target.
+ *
  * Attributes (reflected):
  *   variant   'primary' | 'secondary' | 'ghost' | 'danger'   (default 'secondary')
  *   size      'sm' | 'md' | 'lg'                              (default 'md')

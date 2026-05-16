@@ -84,4 +84,28 @@ describe('<core-button>', () => {
     btn.click();
     expect(submitted).not.toHaveBeenCalled();
   });
+
+  it('does not synthesise requestSubmit when click bubbles from the inner <button>', async () => {
+    const form = document.createElement('form');
+    form.innerHTML = '<core-button type="submit">Save</core-button>';
+    document.body.appendChild(form);
+    const submitted = vi.fn((e: Event) => e.preventDefault());
+    form.addEventListener('submit', submitted);
+    const btn = form.querySelector('core-button') as any;
+    await btn.updateComplete;
+
+    // Simulate a bubbled click from the inner <button> (ev.target = inner).
+    // The host's click handler should detect ev.target !== this and bail
+    // out, leaving form submission to the browser's native algorithm.
+    // happy-dom 15 fires native form submission on inner-button click, so
+    // the submit handler is expected to fire exactly once. If the host
+    // handler ALSO synthesised requestSubmit (the bug we're locking out),
+    // the submit handler would fire twice — once natively and once from
+    // requestSubmit. Asserting "called exactly once" is therefore the
+    // no-double-fire invariant.
+    const inner = btn.querySelector('button') as HTMLButtonElement;
+    inner.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+    expect(submitted).toHaveBeenCalledTimes(1);
+  });
 });
