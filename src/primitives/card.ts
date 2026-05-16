@@ -26,8 +26,12 @@ export class CoreCard extends CoreElement {
   @property({ reflect: true }) padding: CardPadding = 'md';
   @property({ reflect: true, type: Boolean }) interactive = false;
 
+  private _consumerTabIndex: string | null = null;
+
   override connectedCallback(): void {
     super.connectedCallback();
+    // Snapshot consumer-set tabindex (if any) before we manage it ourselves.
+    this._consumerTabIndex = this.getAttribute('tabindex');
     this._syncTabIndex();
     this.addEventListener('keydown', this._onKeyDown);
   }
@@ -42,8 +46,13 @@ export class CoreCard extends CoreElement {
   }
 
   private _syncTabIndex(): void {
-    if (this.interactive) this.tabIndex = 0;
-    else if (!this.hasAttribute('tabindex')) this.tabIndex = -1;
+    if (this.interactive) {
+      this.tabIndex = 0;
+    } else if (this._consumerTabIndex !== null) {
+      this.setAttribute('tabindex', this._consumerTabIndex);
+    } else {
+      this.removeAttribute('tabindex');
+    }
   }
 
   private _onKeyDown = (ev: KeyboardEvent): void => {

@@ -53,4 +53,51 @@ describe('<core-card>', () => {
     await (el as any).updateComplete;
     expect(el.tabIndex).toBe(-1);
   });
+
+  it('preserves consumer-set tabindex across interactive toggles', async () => {
+    const el = document.createElement('core-card');
+    el.setAttribute('tabindex', '3');
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    expect(el.getAttribute('tabindex')).toBe('3');
+
+    el.setAttribute('interactive', '');
+    await (el as any).updateComplete;
+    expect(el.tabIndex).toBe(0);
+
+    el.removeAttribute('interactive');
+    await (el as any).updateComplete;
+    expect(el.getAttribute('tabindex')).toBe('3');
+  });
+
+  it('removes tabindex when interactive flips to false (no consumer tabindex)', async () => {
+    const el = document.createElement('core-card');
+    el.setAttribute('interactive', '');
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    expect(el.tabIndex).toBe(0);
+
+    el.removeAttribute('interactive');
+    await (el as any).updateComplete;
+    expect(el.hasAttribute('tabindex')).toBe(false);
+  });
+
+  it('defers Enter to nested <button> inside an interactive card', async () => {
+    const el = document.createElement('core-card');
+    el.setAttribute('interactive', '');
+    el.innerHTML = '<button id="inner">Click me</button>';
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+
+    const outerClicked = vi.fn();
+    el.addEventListener('click', outerClicked);
+    const inner = el.querySelector('#inner') as HTMLElement;
+    inner.dispatchEvent(new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+    }));
+    // The outer card's synthetic-click branch should NOT have fired
+    // (it would have caused el.click() → outerClicked).
+    expect(outerClicked).not.toHaveBeenCalled();
+  });
 });

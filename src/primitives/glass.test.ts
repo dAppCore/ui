@@ -30,4 +30,21 @@ describe('<core-glass>', () => {
     await (el as any).updateComplete;
     expect(el.getAttribute('radius')).toBe('24px');
   });
+
+  it('lands radius attribute as inline style on [part="base"]', async () => {
+    const el = document.createElement('core-glass');
+    el.setAttribute('radius', '24px');
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    const base = el.querySelector('[part="base"]') as HTMLElement;
+    expect(base.style.getPropertyValue('--core-glass-radius')).toBe('24px');
+  });
+
+  it('omits inline radius style when radius attribute is absent', async () => {
+    const el = document.createElement('core-glass');
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    const base = el.querySelector('[part="base"]') as HTMLElement;
+    expect(base.style.getPropertyValue('--core-glass-radius')).toBe('');
+  });
 });
