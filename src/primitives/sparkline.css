@@ -1,0 +1,40 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* @dappcore/ui — <core-sparkline> default styles. */
+
+core-sparkline {
+  display: inline-block;
+
+  --core-sparkline-stroke: var(--core-brand-500);
+  --core-sparkline-stroke-width: 1.5;
+  --core-sparkline-fill: color-mix(in oklch, var(--core-brand-500) 25%, transparent);
+  --core-sparkline-marker-size: 3px;
+  --core-sparkline-track-color: transparent;
+}
+
+core-sparkline [part="base"] {
+  display: block;
+  width: 100%;
+  height: 32px;
+  overflow: visible;
+}
+
+core-sparkline [part="track"] {
+  fill: var(--core-sparkline-track-color);
+}
+
+core-sparkline [part="line"] {
+  fill: none;
+  stroke: var(--core-sparkline-stroke);
+  stroke-width: var(--core-sparkline-stroke-width);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+core-sparkline [part="area"] {
+  fill: var(--core-sparkline-fill);
+  stroke: none;
+}
+
+core-sparkline [part="marker"] {
+  fill: var(--core-sparkline-stroke);
+}
