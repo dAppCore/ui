@@ -1,0 +1,52 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* @dappcore/ui — <core-card> default styles. */
+
+core-card {
+  display: block;
+
+  --core-card-bg: var(--core-ink-2);
+  --core-card-border-color: var(--core-line-1);
+  --core-card-radius: var(--core-radius-lg);
+  --core-card-padding: 16px;
+  --core-card-shadow: none;
+  --core-card-bg-hover: var(--core-ink-3);
+}
+
+core-card[elevation="raised"]   { --core-card-shadow: var(--core-shadow-2); --core-card-border-color: var(--core-line-2); }
+core-card[elevation="floating"] { --core-card-shadow: var(--core-shadow-3); --core-card-border-color: var(--core-line-2); }
+
+core-card[padding="none"] { --core-card-padding: 0; }
+core-card[padding="sm"]   { --core-card-padding: 8px; }
+core-card[padding="md"]   { --core-card-padding: 16px; }
+core-card[padding="lg"]   { --core-card-padding: 24px; }
+
+core-card [part="base"] {
+  background: var(--core-card-bg);
+  border: 1px solid var(--core-card-border-color);
+  border-radius: var(--core-card-radius);
+  box-shadow: var(--core-card-shadow);
+  overflow: hidden;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+core-card[interactive] [part="base"] {
+  cursor: pointer;
+}
+core-card[interactive]:hover [part="base"] {
+  background: var(--core-card-bg-hover);
+}
+core-card[interactive]:focus-visible [part="base"] {
+  outline: 2px solid var(--core-brand-500);
+  outline-offset: 2px;
+}
+
+core-card [part="header"]:empty,
+core-card [part="footer"]:empty,
+core-card [part="media"]:empty { display: none; }
+
+core-card [part="header"] { padding: var(--core-card-padding); padding-bottom: 0; }
+core-card [part="body"]   { padding: var(--core-card-padding); }
+core-card [part="footer"] { padding: var(--core-card-padding); padding-top: 0; }
+core-card [part="media"]  { display: block; }
+core-card [part="media"] img,
+core-card [part="media"] video { display: block; max-width: 100%; }

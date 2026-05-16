@@ -1,0 +1,57 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* @dappcore/ui — <core-glass> default styles. */
+
+core-glass {
+  display: inline-block;
+  position: relative;
+  isolation: isolate;
+
+  --core-glass-radius: var(--core-radius-lg);
+  --core-glass-blur: 24px;
+  --core-glass-tint: rgba(255, 255, 255, 0.05);
+  --core-glass-tint-dark: rgba(255, 255, 255, 0.08);
+  --core-glass-tint-fallback: var(--core-ink-2);
+  --core-glass-border-color: rgba(255, 255, 255, 0.08);
+}
+
+core-glass[dark] {
+  --core-glass-border-color: rgba(255, 255, 255, 0.12);
+}
+
+core-glass [part="base"] {
+  position: relative;
+  border-radius: var(--core-glass-radius);
+  overflow: hidden;
+  border: 0.5px solid var(--core-glass-border-color);
+}
+
+core-glass [part="layer-blur"],
+core-glass [part="layer-tint"] {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+core-glass [part="layer-blur"] {
+  backdrop-filter: blur(var(--core-glass-blur));
+  -webkit-backdrop-filter: blur(var(--core-glass-blur));
+}
+
+core-glass [part="layer-tint"] {
+  background: var(--core-glass-tint);
+}
+core-glass[dark] [part="layer-tint"] {
+  background: var(--core-glass-tint-dark);
+}
+
+core-glass [part="content"] {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fallback: no backdrop-filter support → opaque tint. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  core-glass [part="layer-blur"] { display: none; }
+  core-glass [part="layer-tint"] { background: var(--core-glass-tint-fallback); }
+}
