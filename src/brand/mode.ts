@@ -30,7 +30,6 @@ export class ModeController implements ReactiveController {
   }
 
   hostConnected(): void { this.refresh(); }
-  hostUpdated(): void { this.refresh(); }
 
   private refresh(): void {
     const next = getMode(this.host);

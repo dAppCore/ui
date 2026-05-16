@@ -39,7 +39,6 @@ export class BrandController implements ReactiveController {
   }
 
   hostConnected(): void { this.refresh(); }
-  hostUpdated(): void { this.refresh(); }
 
   private refresh(): void {
     const next = getBrand(this.host);
