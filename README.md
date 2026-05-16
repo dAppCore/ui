@@ -52,6 +52,39 @@ import { getPlatform, isNativeShell }       from '@dappcore/ui/platform';
 import { BrandController, ModeController }  from '@dappcore/ui/brand';
 ```
 
+## Primitives (v0.5)
+
+Eleven brand-neutral Web Components ready for any UI agent:
+
+```html
+<core-button variant="primary" type="submit">Save</core-button>
+<core-toggle name="notify" value="yes" checked>Notify me</core-toggle>
+<core-status-dot state="good" pulse aria-label="Online"></core-status-dot>
+<core-pill state="brand">
+  <core-icon slot="leading" name="check" decorative></core-icon>
+  Active
+</core-pill>
+<core-icon name="search" size="lg"></core-icon>
+<core-label for="email" required>Email</core-label>
+<core-card elevation="raised" interactive>Body content</core-card>
+<core-glass dark radius="20px"><p>Floating panel</p></core-glass>
+<core-window-controls></core-window-controls>          <!-- auto-detects -->
+<core-rail href="/dashboard" active>Dashboard</core-rail>
+<core-sparkline kind="area" points="1,3,2,5,4,7,6"></core-sparkline>
+```
+
+Light DOM, `::part()`-style hooks via attribute selectors, brandable via
+`[data-brand]` (all primitives consume `--core-*` tokens). Default styles
+ship as sibling `.css` files; import the aggregator for one-shot setup:
+
+```css
+@import "@dappcore/ui/primitives/index.css";
+```
+
+The `<core-icon>` registry ships 12 default icons (check, x, chevrons,
+plus/minus, info/warning/danger, search). Register your own with
+`registerIcon(name, svg)` or drop SVG inline via the default slot.
+
 ## Design canon
 
 [RFC.md](RFC.md) — full spec including the pipe registry, component contracts, polyglot story. Read this for the why.

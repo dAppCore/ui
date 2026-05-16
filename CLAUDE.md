@@ -21,7 +21,7 @@ Templates are **valid HTML** (Flexy property preserved). A `<core-data-table>` o
 
 Mojo: no brand, but brandable with ease. Every brand selection is additive over `[data-brand="…"]`. New brands are one CSS file each.
 
-## Layer map (v0.2 — current)
+## Layer map (v0.5 — current)
 
 | Layer | Purpose |
 |---|---|
@@ -33,6 +33,7 @@ Mojo: no brand, but brandable with ease. Every brand selection is additive over 
 | `src/a11y/` | aria-live announcer, focus save/restore, prefers-* controllers, aria helpers |
 | `src/platform/` | `getPlatform()`, `isNativeShell()` |
 | `src/brand/` | `BrandController`, `ModeController` over `[data-brand]` / `[data-mode]` |
+| `src/primitives/` | 11 brand-neutral Web Components: button, toggle, status-dot, pill, icon, label, card, glass, window-controls, rail, sparkline. Light DOM via shared `CoreElement` base. Icon registry + 12 default icons. ElementInternals on button + toggle for form participation. |
 | `src/formatters/` | Existing — pipe registry + 12 built-in formatters |
 | `src/crypto/` | Existing — HMAC, lthnHash, UUIDv7, quasi-salt |
 | `src/forms/` | Existing — `<core-form>`, `<core-field>` secure-by-default |
@@ -62,6 +63,9 @@ Mojo: no brand, but brandable with ease. Every brand selection is additive over 
 - Shadow DOM "because reasons" — light DOM unless backdrop isolation is actually needed.
 - `Intl.*` workarounds — if a formatter needs locale-aware output, use `Intl`.
 - Brand hard-coding in `:root` — brand-neutral by design.
+- Shadow DOM in primitives — v0.5 primitives are light DOM. Shadow DOM is reserved for v0.8 surface components needing backdrop isolation.
+- `::part()` pseudo-element syntax in skin layers — Shadow-DOM-only. Use attribute selectors (`core-button [part="base"]`) for light-DOM primitives.
+- Vi-character primitives in CoreUI — `<core-vi>` / `<core-raven>` belong in a Lethean-branded skin or `@dappcore/vi`. CoreUI stays brand-neutral.
 
 ## Test convention
 
