@@ -85,6 +85,50 @@ The `<core-icon>` registry ships 12 default icons (check, x, chevrons,
 plus/minus, info/warning/danger, search). Register your own with
 `registerIcon(name, svg)` or drop SVG inline via the default slot.
 
+## Forms (v0.7)
+
+Six form-input Web Components with native `<form>` participation:
+
+```html
+<form action="/v1/sign-up" method="POST">
+  <core-label for="email" required>Email</core-label>
+  <core-input id="email" type="email" name="email" required>
+    <span slot="hint">Your work email</span>
+  </core-input>
+
+  <core-label for="password">Password</core-label>
+  <core-input id="password" type="password" name="password" required minlength="8">
+    <span slot="error">At least 8 characters.</span>
+  </core-input>
+
+  <core-radio-group name="plan" value="free" required>
+    <core-radio value="free">Free</core-radio>
+    <core-radio value="pro">Pro</core-radio>
+    <core-radio value="enterprise">Enterprise</core-radio>
+  </core-radio-group>
+
+  <core-checkbox name="terms" required>
+    I accept the terms of service
+  </core-checkbox>
+
+  <button type="submit">Sign up</button>
+</form>
+```
+
+Shadow DOM (RFC §4 exception for slot distribution); full Constraint Validation
+API surface — `setValidity`, `validity`, `validationMessage`, `willValidate`,
+`checkValidity`, `reportValidity`, `setCustomValidity`. Inner native inputs
+carry real browser validity; the host mirrors to ElementInternals so
+`<form>.checkValidity()` walks every custom element correctly.
+
+Skin via real `::part()` pseudo-element (Shadow DOM, unlike the v0.5 primitives'
+attribute-selector workaround). Tokens still cascade — CSS custom properties
+pierce shadow boundaries.
+
+Icons via attribute lookup: `<core-input leading-icon="search">` resolves
+through the v0.5 icon registry. Hint and error content via `<slot name="hint">`
+and `<slot name="error">`.
+
 ## Design canon
 
 [RFC.md](RFC.md) — full spec including the pipe registry, component contracts, polyglot story. Read this for the why.
@@ -93,7 +137,7 @@ plus/minus, info/warning/danger, search). Register your own with
 
 ## Roadmap
 
-See [RFC.md §16](RFC.md#16-roadmap). Currently at **v0.5 — primitives layer** (eleven brand-neutral Web Components on top of the v0.2 utils foundation). Next ships the seed `<core-data-table>` per [RFC.md §16](RFC.md#16-roadmap).
+See [RFC.md §16](RFC.md#16-roadmap). Currently at **v0.7 — forms layer** (six form-input Web Components with native `<form>` participation, on top of the v0.5 primitives + v0.2 utils foundations). Next ships the seed `<core-data-table>` per [RFC.md §16](RFC.md#16-roadmap).
 
 ## Licence
 

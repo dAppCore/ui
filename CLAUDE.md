@@ -21,7 +21,7 @@ Templates are **valid HTML** (Flexy property preserved). A `<core-data-table>` o
 
 Mojo: no brand, but brandable with ease. Every brand selection is additive over `[data-brand="…"]`. New brands are one CSS file each.
 
-## Layer map (v0.5 — current)
+## Layer map (v0.7 — current)
 
 | Layer | Purpose |
 |---|---|
@@ -36,7 +36,7 @@ Mojo: no brand, but brandable with ease. Every brand selection is additive over 
 | `src/primitives/` | 11 brand-neutral Web Components: button, toggle, status-dot, pill, icon, label, card, glass, window-controls, rail, sparkline. Light DOM via shared `CoreElement` base. Icon registry + 12 default icons. ElementInternals on button + toggle for form participation. |
 | `src/formatters/` | Existing — pipe registry + 12 built-in formatters |
 | `src/crypto/` | Existing — HMAC, lthnHash, UUIDv7, quasi-salt |
-| `src/forms/` | Existing — `<core-form>`, `<core-field>` secure-by-default |
+| `src/forms/` | Form-input Web Components. Tier 1 (v0.2): `<core-form>` (CSRF + HMAC + honeypot + idempotency), `<core-field>` (RSA-OAEP encryption). Tier 2 (v0.7): `<core-input>`, `<core-textarea>`, `<core-select>` (native inner + slotted options), `<core-checkbox>`, `<core-radio>`, `<core-radio-group>`. All v0.7 primitives extend `CoreFormElement` (Shadow DOM, full Constraint Validation surface, ElementInternals form-association). |
 
 ## Critical contracts
 
@@ -66,6 +66,9 @@ Mojo: no brand, but brandable with ease. Every brand selection is additive over 
 - Shadow DOM in primitives — v0.5 primitives are light DOM. Shadow DOM is reserved for v0.8 surface components needing backdrop isolation.
 - `::part()` pseudo-element syntax in skin layers — Shadow-DOM-only. Use attribute selectors (`core-button [part="base"]`) for light-DOM primitives.
 - Vi-character primitives in CoreUI — `<core-vi>` / `<core-raven>` belong in a Lethean-branded skin or `@dappcore/vi`. CoreUI stays brand-neutral.
+- Light DOM in v0.7 form primitives — Shadow DOM is the v0.7 contract (RFC §4 exception for slot distribution). Use `CoreFormElement` base which uses Lit's default Shadow DOM render root.
+- `private nonce` field on classes extending `LitElement` — conflicts with `HTMLElement.nonce` (CSP). Use `submissionNonce` or similar.
+- Node `Buffer` references in browser-only code — `@dappcore/ui` is browser-only; use `btoa`/`atob` directly without fallback guards.
 
 ## Test convention
 
