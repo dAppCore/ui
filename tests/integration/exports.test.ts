@@ -37,6 +37,28 @@ describe('exports smoke test — every package.json subpath imports cleanly', ()
     const m = await import('../../src/brand/index');
     expect(typeof m.getBrand).toBe('function');
   });
+  it('./forms (v0.7 primitives bundled)', async () => {
+    const m = await import('../../src/forms/index');
+    // Tier 1 (v0.2)
+    expect(typeof (m as any).CoreForm).toBe('function');
+    expect(typeof (m as any).CoreField).toBe('function');
+    // Tier 2 (v0.7)
+    expect(typeof (m as any).CoreFormElement).toBe('function');
+    expect(typeof (m as any).CoreInput).toBe('function');
+    expect(typeof (m as any).CoreTextarea).toBe('function');
+    expect(typeof (m as any).CoreSelect).toBe('function');
+    expect(typeof (m as any).CoreCheckbox).toBe('function');
+    expect(typeof (m as any).CoreRadio).toBe('function');
+    expect(typeof (m as any).CoreRadioGroup).toBe('function');
+  });
+
+  it.each([
+    '_shared/form-element', 'input', 'textarea', 'select',
+    'checkbox', 'radio', 'radio-group',
+  ])('./forms/%s individual subpath', async (name) => {
+    const m = await import(`../../src/forms/${name}`);
+    expect(typeof m).toBe('object');
+  });
   it('./primitives', async () => {
     const m = await import('../../src/primitives/index');
     expect(typeof (m as any).CoreButton).toBe('function');
