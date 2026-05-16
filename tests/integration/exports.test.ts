@@ -5,6 +5,8 @@ describe('exports smoke test — every package.json subpath imports cleanly', ()
   it('@dappcore/ui (root)', async () => {
     const m = await import('../../index');
     expect(typeof m).toBe('object');
+    // Spot-check that the star-export chain works.
+    expect(typeof (m as any).parseColour).toBe('function');
   });
   it('./colour', async () => {
     const m = await import('../../src/colour/index');
