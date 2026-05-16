@@ -21,7 +21,7 @@ class MediaQueryController implements ReactiveController {
   private listener: (ev: MediaQueryListEvent) => void;
   value: boolean;
   constructor(
-    private host: ReactiveControllerHost,
+    host: ReactiveControllerHost,
     query: string,
   ) {
     this.mq = window.matchMedia(query);

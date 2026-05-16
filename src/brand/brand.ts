@@ -26,11 +26,11 @@ export class BrandController implements ReactiveController {
     return getComputedStyle(this.host).getPropertyValue('--core-brand-name').trim().replace(/^"|"$/g, '');
   }
 
-  private observer: MutationObserverController;
-
   constructor(private host: ReactiveControllerHost & Element) {
     this.value = getBrand(host);
-    this.observer = new MutationObserverController(
+    // Side-effect: the controller registers itself with `host` so it observes
+    // for the host's lifetime; we don't need to keep a reference.
+    new MutationObserverController(
       host,
       () => document.documentElement,
       { attributes: true, attributeFilter: ['data-brand'], subtree: true },

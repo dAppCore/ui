@@ -17,11 +17,12 @@ export function getMode(el: Element = document.documentElement): Mode {
 
 export class ModeController implements ReactiveController {
   value: Mode;
-  private observer: MutationObserverController;
 
   constructor(private host: ReactiveControllerHost & Element) {
     this.value = getMode(host);
-    this.observer = new MutationObserverController(
+    // Side-effect: the controller registers itself with `host` so it observes
+    // for the host's lifetime; we don't need to keep a reference.
+    new MutationObserverController(
       host,
       () => document.documentElement,
       { attributes: true, attributeFilter: ['data-mode'], subtree: true },
