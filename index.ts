@@ -1,21 +1,30 @@
 // SPDX-Licence-Identifier: EUPL-1.2
 
 /**
- * @dappcore/ui — root entry.
+ * @dappcore/ui — CoreUI root entry.
  *
- * Importing the root re-exports every component, structural element,
- * formatter, and the registry API. For tree-shaking, prefer
- * sub-imports: `@dappcore/ui/formatters`, `@dappcore/ui/table`,
- * `@dappcore/ui/structural`.
+ * Importing the root re-exports every JS module (formatters, crypto, forms,
+ * colour, math, animation, dom, a11y, platform, brand). CSS tokens are NOT
+ * re-exported from JS — import them separately:
  *
- * Usage example:
+ *   import '@dappcore/ui/tokens';            // bare tokens
+ *   import '@dappcore/ui/tokens/tailwind';   // Tailwind v4 @theme bridge
+ *   import '@dappcore/ui/tokens/brand-lethean';
  *
- *   import '@dappcore/ui';  // side-effects: registers built-in formatters
+ * For tree-shaking, prefer sub-imports:
  *
- *   import { applyPipe } from '@dappcore/ui/formatters';
- *   applyPipe('bytes', 1500); // → "1.5 kB"
+ *   import { parseColour } from '@dappcore/ui/colour';
+ *   import { Easing }      from '@dappcore/ui/math';
+ *   import { FocusTrap }   from '@dappcore/ui/dom';
  */
 
 export * from './src/formatters/index.js';
 export * from './src/crypto/index.js';
 export * from './src/forms/index.js';
+export * from './src/colour/index.js';
+export * from './src/math/index.js';
+export * from './src/animation/index.js';
+export * from './src/dom/index.js';
+export * from './src/a11y/index.js';
+export * from './src/platform/index.js';
+export * from './src/brand/index.js';
