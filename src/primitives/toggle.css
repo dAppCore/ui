@@ -1,0 +1,73 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* @dappcore/ui — <core-toggle> default styles. */
+
+core-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+
+  --core-toggle-height: 18px;
+  --core-toggle-track-color: var(--core-ink-4);
+  --core-toggle-track-color-checked: var(--core-brand-500);
+  --core-toggle-thumb-size: 14px;
+  --core-toggle-thumb-color: var(--core-fg-0);
+  --core-toggle-thumb-color-checked: var(--core-fg-0);
+  --core-toggle-radius: var(--core-radius-pill);
+}
+
+core-toggle[size="sm"] { --core-toggle-height: 14px; --core-toggle-thumb-size: 10px; }
+core-toggle[size="lg"] { --core-toggle-height: 22px; --core-toggle-thumb-size: 18px; }
+
+core-toggle[disabled] { cursor: not-allowed; opacity: 0.5; }
+
+core-toggle [part="base"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+core-toggle [part="track"] {
+  display: inline-block;
+  position: relative;
+  width: calc(var(--core-toggle-thumb-size) * 2 + 4px);
+  height: var(--core-toggle-height);
+  background: var(--core-toggle-track-color);
+  border-radius: var(--core-toggle-radius);
+  transition: background-color 120ms ease;
+}
+
+core-toggle[checked] [part="track"] {
+  background: var(--core-toggle-track-color-checked);
+}
+
+core-toggle [part="thumb"] {
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  transform: translateY(-50%);
+  width: var(--core-toggle-thumb-size);
+  height: var(--core-toggle-thumb-size);
+  background: var(--core-toggle-thumb-color);
+  border-radius: 50%;
+  transition: left 120ms ease, background-color 120ms ease;
+}
+
+core-toggle[checked] [part="thumb"] {
+  left: calc(100% - var(--core-toggle-thumb-size) - 2px);
+  background: var(--core-toggle-thumb-color-checked);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  core-toggle [part="track"],
+  core-toggle [part="thumb"] { transition: none; }
+}
+
+core-toggle [part="label"]:empty { display: none; }
+
+core-toggle:focus-visible {
+  outline: 2px solid var(--core-brand-500);
+  outline-offset: 2px;
+  border-radius: var(--core-radius-sm);
+}
