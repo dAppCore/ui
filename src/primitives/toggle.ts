@@ -75,6 +75,8 @@ export class CoreToggle extends CoreElement {
   }
 
   formResetCallback(): void {
+    // Setting `this.checked` triggers `updated()` → `_syncInternals()` via
+    // the `changed.has('checked')` branch, so form value resyncs automatically.
     this.checked = false;
   }
 

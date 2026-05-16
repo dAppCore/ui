@@ -86,6 +86,13 @@ describe('<core-toggle>', () => {
   });
 
   it('does NOT contribute value when unchecked', async () => {
+    if (typeof HTMLElement.prototype.attachInternals !== 'function') {
+      // happy-dom has no ElementInternals support — real-browser behaviour
+      // is exercised by the T13 integration tests. Without internals,
+      // FormData wouldn't see the toggle either way, so this assertion
+      // would pass trivially. Skip rather than give false coverage.
+      return;
+    }
     const form = document.createElement('form');
     form.innerHTML = '<core-toggle name="enable" value="yes"></core-toggle>';
     document.body.appendChild(form);
