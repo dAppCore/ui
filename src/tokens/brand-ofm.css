@@ -1,0 +1,19 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* Adapted from core/ide/frontend/src/tokens.css (2026-05-07).
+   OFM warm rose-amber — hue 28. */
+
+[data-brand="ofm"] {
+  --core-brand-50:  oklch(0.96 0.022 28);
+  --core-brand-100: oklch(0.90 0.050 28);
+  --core-brand-200: oklch(0.82 0.085 28);
+  --core-brand-300: oklch(0.74 0.120 28);
+  --core-brand-400: oklch(0.66 0.145 28);
+  --core-brand-500: oklch(0.58 0.160 28);
+  --core-brand-600: oklch(0.50 0.150 28);
+  --core-brand-700: oklch(0.42 0.125 28);
+  --core-brand-800: oklch(0.34 0.100 28);
+  --core-brand-900: oklch(0.26 0.075 28);
+  --core-brand-name: "OFM";
+  --core-brand-hue: 28;
+  --core-brand-secondary: var(--core-gold-500);
+}

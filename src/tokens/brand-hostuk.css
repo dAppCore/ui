@@ -1,0 +1,19 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* Adapted from core/ide/frontend/src/tokens.css (2026-05-07).
+   Host UK / Vi royal purple — hue 305. */
+
+[data-brand="hostuk"] {
+  --core-brand-50:  oklch(0.96 0.020 305);
+  --core-brand-100: oklch(0.90 0.045 305);
+  --core-brand-200: oklch(0.82 0.080 305);
+  --core-brand-300: oklch(0.72 0.115 305);
+  --core-brand-400: oklch(0.62 0.145 305);
+  --core-brand-500: oklch(0.54 0.160 305);
+  --core-brand-600: oklch(0.46 0.155 305);
+  --core-brand-700: oklch(0.38 0.130 305);
+  --core-brand-800: oklch(0.30 0.105 305);
+  --core-brand-900: oklch(0.22 0.075 305);
+  --core-brand-name: "Host UK";
+  --core-brand-hue: 305;
+  --core-brand-secondary: var(--core-ember-500);
+}

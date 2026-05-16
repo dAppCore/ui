@@ -1,0 +1,19 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* Adapted from core/ide/frontend/src/tokens.css (2026-05-07).
+   Lethean indigo — hue 270. */
+
+[data-brand="lethean"] {
+  --core-brand-50:  oklch(0.96 0.018 270);
+  --core-brand-100: oklch(0.90 0.042 270);
+  --core-brand-200: oklch(0.82 0.075 270);
+  --core-brand-300: oklch(0.72 0.110 270);
+  --core-brand-400: oklch(0.64 0.140 270);
+  --core-brand-500: oklch(0.56 0.155 270);
+  --core-brand-600: oklch(0.48 0.150 270);
+  --core-brand-700: oklch(0.40 0.125 270);
+  --core-brand-800: oklch(0.32 0.100 270);
+  --core-brand-900: oklch(0.24 0.075 270);
+  --core-brand-name: "Lethean";
+  --core-brand-hue: 270;
+  --core-brand-secondary: var(--core-info-500);
+}

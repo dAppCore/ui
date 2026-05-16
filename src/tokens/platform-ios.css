@@ -1,0 +1,16 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* Adapted from core/ide/frontend/src/tokens.css (2026-05-07).
+   iOS / iPadOS native profile — SF Pro Text + curvier radii. */
+
+[data-platform="ios"], [data-platform="ipad"] {
+  --core-font-sans:    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", "Helvetica Neue", sans-serif;
+  --core-font-mono:    "SF Mono", ui-monospace, Menlo, monospace;
+  --core-font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", sans-serif;
+
+  --core-radius-xs:  4px;
+  --core-radius-sm:  6px;
+  --core-radius-md:  10px;
+  --core-radius-lg:  14px;
+  --core-radius-xl:  18px;
+  --core-radius-2xl: 22px;
+}

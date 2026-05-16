@@ -1,0 +1,159 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* New for @dappcore/ui v0.2 — adapted from core/ide/frontend/src/tokens.css
+   (2026-05-07). Brand-neutral, prefers-color-scheme dark, [data-mode] override. */
+
+:root {
+  /* ── Surface (ink-on-paper metaphor) — LIGHT defaults ── */
+  --core-ink-0: oklch(0.99 0.003 285);
+  --core-ink-1: oklch(0.985 0.004 285);
+  --core-ink-2: oklch(0.97 0.005 285);
+  --core-ink-3: oklch(0.94 0.006 285);
+  --core-ink-4: oklch(0.90 0.007 285);
+  --core-ink-5: oklch(0.84 0.008 285);
+  --core-ink-6: oklch(0.62 0.010 285);
+
+  /* ── Foreground — LIGHT defaults ── */
+  --core-fg-0: oklch(0.18 0.012 285);
+  --core-fg-1: oklch(0.28 0.012 285);
+  --core-fg-2: oklch(0.42 0.010 285);
+  --core-fg-3: oklch(0.54 0.010 285);
+  --core-fg-4: oklch(0.66 0.010 285);
+
+  /* ── Hairlines (color-mix derived) ── */
+  --core-line-1: color-mix(in oklch, var(--core-fg-0) 6%, transparent);
+  --core-line-2: color-mix(in oklch, var(--core-fg-0) 12%, transparent);
+  --core-line-3: color-mix(in oklch, var(--core-fg-0) 22%, transparent);
+
+  /* ── Brand-neutral scale (low chroma, hue anchored to surface) ── */
+  --core-brand-50:  oklch(0.96 0.008 285);
+  --core-brand-100: oklch(0.90 0.012 285);
+  --core-brand-200: oklch(0.82 0.015 285);
+  --core-brand-300: oklch(0.72 0.018 285);
+  --core-brand-400: oklch(0.62 0.020 285);
+  --core-brand-500: oklch(0.54 0.020 285);
+  --core-brand-600: oklch(0.46 0.018 285);
+  --core-brand-700: oklch(0.38 0.015 285);
+  --core-brand-800: oklch(0.30 0.012 285);
+  --core-brand-900: oklch(0.22 0.010 285);
+
+  --core-brand-name: "Core";
+  --core-brand-hue: 285;
+  --core-brand-secondary: var(--core-brand-400);
+
+  /* ── Accent tints (always available; consumed by brand or state badges) ── */
+  --core-gold-300: oklch(0.90 0.110 88);
+  --core-gold-400: oklch(0.84 0.130 88);
+  --core-gold-500: oklch(0.76 0.135 80);
+  --core-gold-600: oklch(0.66 0.135 70);
+  --core-ember-400: oklch(0.78 0.140 55);
+  --core-ember-500: oklch(0.70 0.155 50);
+  --core-ember-600: oklch(0.60 0.155 45);
+
+  /* ── State colours ── */
+  --core-success-400: oklch(0.78 0.110 165);
+  --core-success-500: oklch(0.68 0.115 165);
+  --core-warning-400: oklch(0.82 0.115 78);
+  --core-warning-500: oklch(0.74 0.130 70);
+  --core-danger-400:  oklch(0.74 0.140 22);
+  --core-danger-500:  oklch(0.64 0.150 22);
+  --core-info-400:    oklch(0.78 0.090 230);
+  --core-info-500:    oklch(0.68 0.105 230);
+
+  /* ── Radii ── */
+  --core-radius-xs: 4px;
+  --core-radius-sm: 6px;
+  --core-radius-md: 8px;
+  --core-radius-lg: 12px;
+  --core-radius-xl: 16px;
+  --core-radius-2xl: 22px;
+  --core-radius-pill: 999px;
+
+  /* ── Shadows — LIGHT defaults ── */
+  --core-shadow-1: 0 1px 0 0 rgba(255,255,255,.6) inset, 0 1px 2px rgba(20,18,30,.06);
+  --core-shadow-2: 0 1px 0 0 rgba(255,255,255,.6) inset, 0 4px 14px rgba(20,18,30,.08);
+  --core-shadow-3: 0 1px 0 0 rgba(255,255,255,.6) inset, 0 12px 40px rgba(20,18,30,.12);
+
+  /* ── Type (recommended fonts — consumers load them themselves) ── */
+  --core-font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --core-font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --core-font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --core-font-display: var(--core-font-sans);
+}
+
+/* ── DARK via prefers-color-scheme ── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --core-ink-0: oklch(0.14 0.012 285);
+    --core-ink-1: oklch(0.18 0.012 285);
+    --core-ink-2: oklch(0.22 0.013 285);
+    --core-ink-3: oklch(0.26 0.014 285);
+    --core-ink-4: oklch(0.32 0.014 285);
+    --core-ink-5: oklch(0.42 0.012 285);
+    --core-ink-6: oklch(0.55 0.010 285);
+
+    --core-fg-0: oklch(0.97 0.005 285);
+    --core-fg-1: oklch(0.88 0.006 285);
+    --core-fg-2: oklch(0.74 0.008 285);
+    --core-fg-3: oklch(0.60 0.008 285);
+    --core-fg-4: oklch(0.48 0.008 285);
+
+    --core-line-1: color-mix(in oklch, var(--core-fg-0) 8%, transparent);
+    --core-line-2: color-mix(in oklch, var(--core-fg-0) 14%, transparent);
+    --core-line-3: color-mix(in oklch, var(--core-fg-0) 22%, transparent);
+
+    --core-shadow-1: 0 1px 0 0 var(--core-line-1) inset, 0 1px 2px rgba(0,0,0,.25);
+    --core-shadow-2: 0 1px 0 0 var(--core-line-1) inset, 0 4px 14px rgba(0,0,0,.35);
+    --core-shadow-3: 0 1px 0 0 var(--core-line-2) inset, 0 12px 40px rgba(0,0,0,.5);
+  }
+}
+
+/* ── Manual mode overrides — win over media query ──
+   Comma order matters for happy-dom 15.x: when the selectorText starts
+   with `:root`, happy-dom's getComputedStyle applies the rule
+   unconditionally instead of running the full selector match. Leading
+   with `[data-mode=…]` lets the test environment short-circuit to the
+   spec-correct match path; real browsers ignore comma order entirely. */
+[data-mode="dark"], :root[data-mode="dark"] {
+  --core-ink-0: oklch(0.14 0.012 285);
+  --core-ink-1: oklch(0.18 0.012 285);
+  --core-ink-2: oklch(0.22 0.013 285);
+  --core-ink-3: oklch(0.26 0.014 285);
+  --core-ink-4: oklch(0.32 0.014 285);
+  --core-ink-5: oklch(0.42 0.012 285);
+  --core-ink-6: oklch(0.55 0.010 285);
+
+  --core-fg-0: oklch(0.97 0.005 285);
+  --core-fg-1: oklch(0.88 0.006 285);
+  --core-fg-2: oklch(0.74 0.008 285);
+  --core-fg-3: oklch(0.60 0.008 285);
+  --core-fg-4: oklch(0.48 0.008 285);
+
+  --core-line-1: color-mix(in oklch, var(--core-fg-0) 8%, transparent);
+  --core-line-2: color-mix(in oklch, var(--core-fg-0) 14%, transparent);
+  --core-line-3: color-mix(in oklch, var(--core-fg-0) 22%, transparent);
+
+  --core-shadow-1: 0 1px 0 0 var(--core-line-1) inset, 0 1px 2px rgba(0,0,0,.25);
+  --core-shadow-2: 0 1px 0 0 var(--core-line-1) inset, 0 4px 14px rgba(0,0,0,.35);
+  --core-shadow-3: 0 1px 0 0 var(--core-line-2) inset, 0 12px 40px rgba(0,0,0,.5);
+}
+
+[data-mode="light"], :root[data-mode="light"] {
+  /* Re-assert :root light values so they win over the prefers-color-scheme media query. */
+  --core-ink-0: oklch(0.99 0.003 285);
+  --core-ink-1: oklch(0.985 0.004 285);
+  --core-ink-2: oklch(0.97 0.005 285);
+  --core-ink-3: oklch(0.94 0.006 285);
+  --core-ink-4: oklch(0.90 0.007 285);
+  --core-ink-5: oklch(0.84 0.008 285);
+  --core-ink-6: oklch(0.62 0.010 285);
+
+  --core-fg-0: oklch(0.18 0.012 285);
+  --core-fg-1: oklch(0.28 0.012 285);
+  --core-fg-2: oklch(0.42 0.010 285);
+  --core-fg-3: oklch(0.54 0.010 285);
+  --core-fg-4: oklch(0.66 0.010 285);
+
+  --core-shadow-1: 0 1px 0 0 rgba(255,255,255,.6) inset, 0 1px 2px rgba(20,18,30,.06);
+  --core-shadow-2: 0 1px 0 0 rgba(255,255,255,.6) inset, 0 4px 14px rgba(20,18,30,.08);
+  --core-shadow-3: 0 1px 0 0 rgba(255,255,255,.6) inset, 0 12px 40px rgba(20,18,30,.12);
+}

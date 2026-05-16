@@ -1,0 +1,19 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* Adapted from core/ide/frontend/src/tokens.css (2026-05-07).
+   macOS / Darwin native profile — SF Pro + tighter radii. */
+
+[data-platform="darwin"] {
+  --core-font-sans:    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", "Helvetica Neue", sans-serif;
+  --core-font-mono:    "SF Mono", ui-monospace, "Menlo", monospace;
+  --core-font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", sans-serif;
+
+  --core-radius-xs:  3px;
+  --core-radius-sm:  4px;
+  --core-radius-md:  6px;
+  --core-radius-lg:  8px;
+  --core-radius-xl:  10px;
+  --core-radius-2xl: 14px;
+
+  --core-line-1: color-mix(in oklch, var(--core-fg-0) 7%, transparent);
+  --core-line-2: color-mix(in oklch, var(--core-fg-0) 13%, transparent);
+}
