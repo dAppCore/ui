@@ -1,0 +1,66 @@
+/* SPDX-Licence-Identifier: EUPL-1.2 */
+/* @dappcore/ui — <core-rail> default styles. */
+
+core-rail {
+  display: block;
+
+  --core-rail-height: 32px;
+  --core-rail-padding-x: 10px;
+  --core-rail-radius: var(--core-radius-md);
+  --core-rail-bg: transparent;
+  --core-rail-bg-hover: var(--core-ink-3);
+  --core-rail-bg-active: color-mix(in oklch, var(--core-brand-500) 22%, var(--core-ink-2));
+  --core-rail-fg: var(--core-fg-2);
+  --core-rail-fg-active: var(--core-fg-0);
+}
+
+core-rail [part="base"] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: var(--core-rail-height);
+  padding: 0 var(--core-rail-padding-x);
+  background: var(--core-rail-bg);
+  color: var(--core-rail-fg);
+  border: 0;
+  border-radius: var(--core-rail-radius);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+core-rail:hover [part="base"]:not([disabled]):not([aria-disabled="true"]) {
+  background: var(--core-rail-bg-hover);
+  color: var(--core-rail-fg-active);
+}
+
+core-rail[active] [part="base"] {
+  background: var(--core-rail-bg-active);
+  color: var(--core-rail-fg-active);
+}
+
+core-rail[disabled] [part="base"],
+core-rail [part="base"][aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+core-rail [part="icon-leading"]:empty,
+core-rail [part="icon-trailing"]:empty { display: none; }
+
+core-rail [part="label"] {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+core-rail [part="base"]:focus-visible {
+  outline: 2px solid var(--core-brand-500);
+  outline-offset: 2px;
+}
