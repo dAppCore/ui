@@ -19,7 +19,7 @@ export class FocusTrap implements ReactiveController {
     host.addController(this);
   }
 
-  hostConnected(): void {}
+  hostConnected(): void { /* call activate() manually when trap should engage */ }
   hostDisconnected(): void { this.deactivate(); }
 
   activate(): void {
@@ -36,9 +36,11 @@ export class FocusTrap implements ReactiveController {
       const first = list[0], last = list[list.length - 1];
       const active = document.activeElement as HTMLElement | null;
       if (ev.shiftKey && (active === first || !this.host.contains(active))) {
-        ev.preventDefault(); last.focus();
+        ev.preventDefault();
+        last.focus();
       } else if (!ev.shiftKey && active === last) {
-        ev.preventDefault(); first.focus();
+        ev.preventDefault();
+        first.focus();
       }
     });
   }

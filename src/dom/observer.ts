@@ -5,8 +5,7 @@ import type { ReactiveController, ReactiveControllerHost } from 'lit';
 /** Generic observer controller — Resize, Intersection, Mutation share the shape. */
 abstract class BaseObserverController<T> implements ReactiveController {
   private readonly host: ReactiveControllerHost;
-  private observer: T | null = null;
-  protected entries: unknown[] = [];
+  protected observer: T | null = null;
 
   constructor(host: ReactiveControllerHost) {
     this.host = host;
@@ -37,9 +36,9 @@ export class ResizeObserverController extends BaseObserverController<ResizeObser
   }
   protected start(): void {
     const t = this.target();
-    if (t) (this as any).observer?.observe(t);
+    if (t) this.observer?.observe(t);
   }
-  protected stop(): void { (this as any).observer?.disconnect(); }
+  protected stop(): void { this.observer?.disconnect(); }
 }
 
 export class IntersectionObserverController extends BaseObserverController<IntersectionObserver> {
@@ -60,9 +59,9 @@ export class IntersectionObserverController extends BaseObserverController<Inter
   }
   protected start(): void {
     const t = this.target();
-    if (t) (this as any).observer?.observe(t);
+    if (t) this.observer?.observe(t);
   }
-  protected stop(): void { (this as any).observer?.disconnect(); }
+  protected stop(): void { this.observer?.disconnect(); }
 }
 
 export class MutationObserverController extends BaseObserverController<MutationObserver> {
@@ -80,7 +79,7 @@ export class MutationObserverController extends BaseObserverController<MutationO
   }
   protected start(): void {
     const t = this.target();
-    if (t) (this as any).observer?.observe(t, this.opts);
+    if (t) this.observer?.observe(t, this.opts);
   }
-  protected stop(): void { (this as any).observer?.disconnect(); }
+  protected stop(): void { this.observer?.disconnect(); }
 }
