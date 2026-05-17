@@ -362,6 +362,109 @@ import '@dappcore/ui/tabs';                     // side-effect, registers all 3 
 import { CoreTabs } from '@dappcore/ui/tabs';   // typed
 ```
 
+## Menu (v0.9)
+
+`<core-menu>` + `<core-menuitem>` + `<core-menu-separator>` — W3C ARIA menu pattern. Shadow DOM container, auto-wired ARIA, roving tabindex, keyboard nav (Arrow/Home/End/Enter/Space/Escape), single-char type-ahead, submenu support.
+
+### Standalone flat menu
+
+```html
+<core-menu>
+  <core-menuitem>Dashboard</core-menuitem>
+  <core-menuitem>Profile</core-menuitem>
+  <core-menuitem disabled>Admin (disabled)</core-menuitem>
+</core-menu>
+```
+
+### With separator, icon slot, and shortcut slot
+
+```html
+<core-menu>
+  <core-menuitem value="new">
+    <core-icon slot="start" name="plus"></core-icon>
+    New file
+    <span slot="end" class="shortcut">⌘N</span>
+  </core-menuitem>
+  <core-menuitem value="open">Open</core-menuitem>
+  <core-menu-separator></core-menu-separator>
+  <core-menuitem value="save">
+    <core-icon slot="start" name="save"></core-icon>
+    Save
+    <span slot="end" class="shortcut">⌘S</span>
+  </core-menuitem>
+</core-menu>
+```
+
+### Submenu (nested `<core-menu>` inside `<core-menuitem has-submenu>`)
+
+```html
+<core-menu>
+  <core-menuitem>New file</core-menuitem>
+  <core-menuitem has-submenu>Export
+    <core-menu>
+      <core-menuitem value="pdf">As PDF</core-menuitem>
+      <core-menuitem value="html">As HTML</core-menuitem>
+    </core-menu>
+  </core-menuitem>
+</core-menu>
+```
+
+Keyboard: `ArrowRight` opens submenu + focuses first item. `ArrowLeft` / `Escape` closes back to parent.
+
+### Popover-composed (triggered menu)
+
+```html
+<button id="more-btn">More ▾</button>
+<core-popover anchor="#more-btn" placement="bottom-start">
+  <core-menu>
+    <core-menuitem value="edit">Edit</core-menuitem>
+    <core-menuitem value="delete">Delete</core-menuitem>
+  </core-menu>
+</core-popover>
+```
+
+`<core-popover>` (v0.8) handles anchor positioning + light-dismiss + focus. Consumer listens for `core-menu-select` (action) and `core-popover-close` (dismissal). Call `popover.hide()` from the `core-menu-select` handler to close after action.
+
+### Programmatic focus control
+
+```ts
+import '@dappcore/ui/menu';
+import type { CoreMenu } from '@dappcore/ui/menu';
+
+const menu = document.querySelector('core-menu') as CoreMenu;
+
+// Focus the first item when menu opens
+menu.focusFirst();
+
+// Focus a specific item by index
+menu.focusItem(2);
+
+// Focus a specific item by element ref
+const item = menu.querySelector('core-menuitem[value="save"]');
+menu.focusItem(item);
+
+// Listen for selection
+menu.addEventListener('core-menu-select', (e) => {
+  const { item, index, value } = e.detail;
+  console.log(`Selected: ${value} at index ${index}`);
+});
+
+// Listen for close request
+menu.addEventListener('core-menu-close', (e) => {
+  // e.preventDefault() keeps menu open (e.g. for async validation)
+  popover.hide();
+});
+```
+
+### Import paths
+
+```ts
+import '@dappcore/ui/menu';                       // side-effect: registers all 3 elements
+import { CoreMenu } from '@dappcore/ui/menu';      // typed
+import { CoreMenuitem } from '@dappcore/ui/menu/menuitem';
+import { CoreMenuSeparator } from '@dappcore/ui/menu/menu-separator';
+```
+
 ## Design canon
 
 [RFC.md](RFC.md) — full spec including the pipe registry, component contracts, polyglot story. Read this for the why.
