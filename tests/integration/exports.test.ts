@@ -148,3 +148,36 @@ describe('@dappcore/ui/surfaces exports', () => {
     expect(typeof computePosition).toBe('function');
   });
 });
+
+// ── v0.3 data-table exports ──────────────────────────────────────────────────
+
+describe('@dappcore/ui/data-table exports', () => {
+  it('exports ./data-table barrel', async () => {
+    const mod = await import('../../src/data-table/index');
+    expect(typeof mod.CoreDataTable).toBe('function');
+    expect(typeof mod.CoreColumn).toBe('function');
+  });
+
+  it('exports ./data-table/column', async () => {
+    const mod = await import('../../src/data-table/column');
+    expect(typeof mod.CoreColumn).toBe('function');
+  });
+
+  it('exports ./data-table/data-table', async () => {
+    const mod = await import('../../src/data-table/data-table');
+    expect(typeof mod.CoreDataTable).toBe('function');
+  });
+
+  it('exports ./data-table/_shared/sort', async () => {
+    const mod = await import('../../src/data-table/_shared/sort');
+    expect(typeof mod.getComparator).toBe('function');
+    expect(typeof mod.sortRows).toBe('function');
+  });
+
+  it('exports ./data-table/_shared/pagination', async () => {
+    const mod = await import('../../src/data-table/_shared/pagination');
+    expect(typeof mod.pageCount).toBe('function');
+    expect(typeof mod.pageSlice).toBe('function');
+    expect(typeof mod.pageWindow).toBe('function');
+  });
+});
