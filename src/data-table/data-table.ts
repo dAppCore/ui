@@ -236,9 +236,18 @@ export class CoreDataTable extends LitElement {
     });
     this.dispatchEvent(event);
 
-    // Reflect attrs regardless of cancel (consumer uses these for their UI state)
+    // Reflect attrs regardless of cancel (consumer uses these for their UI state).
+    // Write directly to DOM so callers see the new values synchronously (before
+    // Lit's async update cycle runs); the @property binding stays in sync on the
+    // next render because Lit reads _attributeToProperty on observed attrs.
     this.sortByAttr = key;
     this.sortDirAttr = dir ?? 'asc';
+    if (key === null) {
+      this.removeAttribute('sort-by');
+    } else {
+      this.setAttribute('sort-by', key);
+    }
+    this.setAttribute('sort-dir', dir ?? 'asc');
 
     if (!event.defaultPrevented) {
       if (key === null) {

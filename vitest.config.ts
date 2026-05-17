@@ -2,6 +2,12 @@
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  resolve: {
+    // Prefer TypeScript source over compiled JS artefacts that live alongside
+    // .ts files in src/. Without this Vite/esbuild resolves .js before .ts and
+    // picks up stale build output instead of the live source.
+    extensions: ['.ts', '.tsx', '.mts', '.js', '.jsx', '.mjs', '.json'],
+  },
   esbuild: {
     target: 'es2022',
   },
