@@ -173,3 +173,119 @@ describe('<core-tabs> — baseline', () => {
     cleanup(el);
   });
 });
+
+// ── Keyboard navigation ───────────────────────────────────────────────────
+
+describe('<core-tabs> — keyboard navigation', () => {
+  it('ArrowRight (horizontal) moves focus and activates next tab (auto mode)', async () => {
+    const el = await makeTabs(`
+      <core-tab>One</core-tab>
+      <core-tab>Two</core-tab>
+      <core-tab>Three</core-tab>
+      <core-tabpanel>Panel One</core-tabpanel>
+      <core-tabpanel>Panel Two</core-tabpanel>
+      <core-tabpanel>Panel Three</core-tabpanel>
+    `);
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    expect(el.selectedIndex).toBe(1);
+    cleanup(el);
+  });
+
+  it('ArrowLeft (horizontal) moves focus and activates previous tab (auto mode)', async () => {
+    const el = await makeTabs(`
+      <core-tab>One</core-tab>
+      <core-tab>Two</core-tab>
+      <core-tab>Three</core-tab>
+      <core-tabpanel>Panel One</core-tabpanel>
+      <core-tabpanel>Panel Two</core-tabpanel>
+      <core-tabpanel>Panel Three</core-tabpanel>
+    `);
+    el.select(2);
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+    expect(el.selectedIndex).toBe(1);
+    cleanup(el);
+  });
+
+  it('ArrowDown (vertical) moves focus and activates next tab', async () => {
+    const el = await makeTabs(`
+      <core-tab>One</core-tab>
+      <core-tab>Two</core-tab>
+      <core-tabpanel>Panel One</core-tabpanel>
+      <core-tabpanel>Panel Two</core-tabpanel>
+    `);
+    (el as any).orientation = 'vertical';
+    el.setAttribute('orientation', 'vertical');
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    expect(el.selectedIndex).toBe(1);
+    cleanup(el);
+  });
+
+  it('ArrowUp (vertical) moves focus and activates previous tab', async () => {
+    const el = await makeTabs(`
+      <core-tab>One</core-tab>
+      <core-tab>Two</core-tab>
+      <core-tabpanel>Panel One</core-tabpanel>
+      <core-tabpanel>Panel Two</core-tabpanel>
+    `);
+    (el as any).orientation = 'vertical';
+    el.setAttribute('orientation', 'vertical');
+    el.select(1);
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+    expect(el.selectedIndex).toBe(0);
+    cleanup(el);
+  });
+
+  it('Home key activates first non-disabled tab', async () => {
+    const el = await makeTabs(`
+      <core-tab>One</core-tab>
+      <core-tab>Two</core-tab>
+      <core-tab>Three</core-tab>
+      <core-tabpanel>Panel One</core-tabpanel>
+      <core-tabpanel>Panel Two</core-tabpanel>
+      <core-tabpanel>Panel Three</core-tabpanel>
+    `);
+    el.select(2);
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+    expect(el.selectedIndex).toBe(0);
+    cleanup(el);
+  });
+
+  it('End key activates last non-disabled tab', async () => {
+    const el = await makeTabs(`
+      <core-tab>One</core-tab>
+      <core-tab>Two</core-tab>
+      <core-tab>Three</core-tab>
+      <core-tabpanel>Panel One</core-tabpanel>
+      <core-tabpanel>Panel Two</core-tabpanel>
+      <core-tabpanel>Panel Three</core-tabpanel>
+    `);
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+    expect(el.selectedIndex).toBe(2);
+    cleanup(el);
+  });
+
+  it('ArrowRight wraps from last tab to first tab', async () => {
+    const el = await makeTabs(`
+      <core-tab>One</core-tab>
+      <core-tab>Two</core-tab>
+      <core-tab>Three</core-tab>
+      <core-tabpanel>Panel One</core-tabpanel>
+      <core-tabpanel>Panel Two</core-tabpanel>
+      <core-tabpanel>Panel Three</core-tabpanel>
+    `);
+    el.select(2);
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    expect(el.selectedIndex).toBe(0);
+    cleanup(el);
+  });
+
+  it('[part="indicator"] element exists in shadow root', async () => {
+    const el = await makeTabs(`
+      <core-tab>One</core-tab>
+      <core-tabpanel>Panel One</core-tabpanel>
+    `);
+    const indicator = el.shadowRoot?.querySelector('[part="indicator"]');
+    expect(indicator).not.toBeNull();
+    cleanup(el);
+  });
+});
