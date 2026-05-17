@@ -149,6 +149,32 @@ describe('@dappcore/ui/surfaces exports', () => {
   });
 });
 
+// ── v0.4 tabs exports ────────────────────────────────────────────────────────
+
+describe('@dappcore/ui/tabs exports', () => {
+  it('exports ./tabs barrel (CoreTabs, CoreTab, CoreTabpanel)', async () => {
+    const mod = await import('../../src/tabs/index');
+    expect(typeof mod.CoreTabs).toBe('function');
+    expect(typeof mod.CoreTab).toBe('function');
+    expect(typeof mod.CoreTabpanel).toBe('function');
+  });
+
+  it('exports ./tabs/tabs', async () => {
+    const mod = await import('../../src/tabs/tabs');
+    expect(typeof mod.CoreTabs).toBe('function');
+  });
+
+  it('exports ./tabs/tab', async () => {
+    const mod = await import('../../src/tabs/tab');
+    expect(typeof mod.CoreTab).toBe('function');
+  });
+
+  it('exports ./tabs/tabpanel', async () => {
+    const mod = await import('../../src/tabs/tabpanel');
+    expect(typeof mod.CoreTabpanel).toBe('function');
+  });
+});
+
 // ── v0.3 data-table exports ──────────────────────────────────────────────────
 
 describe('@dappcore/ui/data-table exports', () => {
