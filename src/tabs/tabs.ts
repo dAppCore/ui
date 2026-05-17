@@ -409,8 +409,11 @@ export class CoreTabs extends LitElement {
     } else if (key === 'End') {
       this._moveFocusTo('last');
       handled = true;
-    } else if ((key === 'Space' || key === 'Enter') && this.activation === 'manual') {
+    } else if ((key === ' ' || key === 'Space' || key === 'Enter') && this.activation === 'manual') {
       // Manual mode: Space/Enter activates the focused tab.
+      // Real browsers report spacebar as key === ' ' (single space char).
+      // happy-dom passes whatever the test constructed with (e.g. 'Space').
+      // Both are accepted, plus Enter per W3C APG.
       this._activate(this._focusedIndex);
       handled = true;
     }

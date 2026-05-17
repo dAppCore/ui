@@ -310,7 +310,7 @@ describe('<core-tabs> — manual activation + disabled handling', () => {
     cleanup(el);
   });
 
-  it('activation="manual": Space key activates the focused tab', async () => {
+  it('activation="manual": Space key activates the focused tab (real-browser " " char)', async () => {
     const el = await makeTabs(`
       <core-tab>One</core-tab>
       <core-tab>Two</core-tab>
@@ -321,6 +321,24 @@ describe('<core-tabs> — manual activation + disabled handling', () => {
     (el as any).activation = 'manual';
     el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
     expect(el.selectedIndex).toBe(0);
+    // Real browsers report spacebar as key === ' ' (single space character).
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+    expect(el.selectedIndex).toBe(1);
+    cleanup(el);
+  });
+
+  it('activation="manual": Space key activates via legacy "Space" string (happy-dom parity)', async () => {
+    const el = await makeTabs(`
+      <core-tab>One</core-tab>
+      <core-tab>Two</core-tab>
+      <core-tabpanel>Panel One</core-tabpanel>
+      <core-tabpanel>Panel Two</core-tabpanel>
+    `);
+    el.setAttribute('activation', 'manual');
+    (el as any).activation = 'manual';
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    expect(el.selectedIndex).toBe(0);
+    // Backward-compat: handler also accepts the legacy 'Space' string.
     el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Space', bubbles: true }));
     expect(el.selectedIndex).toBe(1);
     cleanup(el);
