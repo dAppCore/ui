@@ -193,3 +193,118 @@ describe('<core-menu> — baseline', () => {
     cleanup(el);
   });
 });
+
+// ── Keyboard navigation ───────────────────────────────────────────────────
+
+describe('<core-menu> — keyboard navigation + type-ahead', () => {
+  it('ArrowDown (vertical) moves focus to next non-disabled item', async () => {
+    const el = await makeMenu(THREE_ITEMS);
+    // Initial focus is on index 0. ArrowDown → index 1.
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    const items = el.querySelectorAll('core-menuitem');
+    expect(items[1].getAttribute('tabindex')).toBe('0');
+    expect(items[0].getAttribute('tabindex')).toBe('-1');
+    cleanup(el);
+  });
+
+  it('ArrowUp (vertical) moves focus to previous item, wrapping at top', async () => {
+    const el = await makeMenu(THREE_ITEMS);
+    // Start at index 0. ArrowUp wraps to last (index 2).
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+    const items = el.querySelectorAll('core-menuitem');
+    expect(items[2].getAttribute('tabindex')).toBe('0');
+    cleanup(el);
+  });
+
+  it('ArrowDown skips disabled items in the middle', async () => {
+    const el = await makeMenu(WITH_DISABLED);
+    // index 0 focused. ArrowDown → skip index 1 (disabled) → index 2.
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    const items = el.querySelectorAll('core-menuitem');
+    expect(items[2].getAttribute('tabindex')).toBe('0');
+    cleanup(el);
+  });
+
+  it('Home key focuses first non-disabled item', async () => {
+    const el = await makeMenu(THREE_ITEMS);
+    // Move to last first, then Home.
+    el.focusItem(2);
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+    const items = el.querySelectorAll('core-menuitem');
+    expect(items[0].getAttribute('tabindex')).toBe('0');
+    cleanup(el);
+  });
+
+  it('End key focuses last non-disabled item', async () => {
+    const el = await makeMenu(THREE_ITEMS);
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+    const items = el.querySelectorAll('core-menuitem');
+    expect(items[2].getAttribute('tabindex')).toBe('0');
+    cleanup(el);
+  });
+
+  it('Enter key activates focused item → fires core-menu-select', async () => {
+    const el = await makeMenu(`<core-menuitem value="open">Open</core-menuitem>`);
+    let detail: any;
+    el.addEventListener('core-menu-select', (e: Event) => {
+      detail = (e as CustomEvent).detail;
+    });
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(detail).toBeDefined();
+    expect(detail.value).toBe('open');
+    cleanup(el);
+  });
+
+  it('Space key (" ") activates focused item → fires core-menu-select', async () => {
+    const el = await makeMenu(`<core-menuitem value="save">Save</core-menuitem>`);
+    let detail: any;
+    el.addEventListener('core-menu-select', (e: Event) => {
+      detail = (e as CustomEvent).detail;
+    });
+    // Real-browser space char — ' ' (single space character, v0.4 T6 pattern).
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+    expect(detail).toBeDefined();
+    expect(detail.value).toBe('save');
+    cleanup(el);
+  });
+
+  it('type-ahead: typing "s" focuses first item starting with "s"', async () => {
+    const el = await makeMenu(`
+      <core-menuitem>New file</core-menuitem>
+      <core-menuitem>Open</core-menuitem>
+      <core-menuitem>Save</core-menuitem>
+      <core-menuitem>Settings</core-menuitem>
+    `);
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 's', bubbles: true }));
+    const items = el.querySelectorAll('core-menuitem');
+    // "Save" is the first item (from focused+1=1) starting with "s"
+    expect(items[2].getAttribute('tabindex')).toBe('0');
+    cleanup(el);
+  });
+
+  it('type-ahead: multi-char within 500ms refines match', async () => {
+    const el = await makeMenu(`
+      <core-menuitem>Save</core-menuitem>
+      <core-menuitem>Settings</core-menuitem>
+      <core-menuitem>Sort</core-menuitem>
+    `);
+    // Type 's' — matches Save (index 0, searching from -1+1=0).
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 's', bubbles: true }));
+    // Type 'e' immediately (within 500ms window) — buffer is now "se", matches Settings.
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'e', bubbles: true }));
+    const items = el.querySelectorAll('core-menuitem');
+    expect(items[1].getAttribute('tabindex')).toBe('0');
+    cleanup(el);
+  });
+
+  it('all-disabled keyboard nav is a no-op (no infinite loop)', async () => {
+    const el = await makeMenu(`
+      <core-menuitem disabled>Disabled A</core-menuitem>
+      <core-menuitem disabled>Disabled B</core-menuitem>
+    `);
+    expect(() => {
+      el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    }).not.toThrow();
+    cleanup(el);
+  });
+});
