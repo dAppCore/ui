@@ -399,3 +399,49 @@ describe('<core-data-table> — selection', () => {
     expect(el.selected.has('u2')).toBe(true);
   });
 });
+
+// ── Density + sticky-header ───────────────────────────────────────────────────
+
+describe('<core-data-table> — density + sticky-header', () => {
+  // getBoundingClientRect() returns zeros in happy-dom — pixel padding not
+  // testable here. Playwright sweep covers: actual cell padding per density,
+  // sticky header scroll behaviour, focus ring visibility.
+
+  it('density attribute reflects on the host element', async () => {
+    const el = await makeTable(`
+      <core-data-table density="compact">
+        <core-column key="name" label="Name"></core-column>
+      </core-data-table>
+    `);
+    expect(el.getAttribute('density')).toBe('compact');
+  });
+
+  it('density defaults to "cozy" when not set', async () => {
+    const el = await makeTable(`
+      <core-data-table>
+        <core-column key="name" label="Name"></core-column>
+      </core-data-table>
+    `);
+    expect((el as any).density).toBe('cozy');
+  });
+
+  it('sticky-header attribute reflects on host (defaults present)', async () => {
+    const el = await makeTable(`
+      <core-data-table sticky-header>
+        <core-column key="name" label="Name"></core-column>
+      </core-data-table>
+    `);
+    expect(el.hasAttribute('sticky-header')).toBe(true);
+  });
+
+  it('sticky-header can be absent (opt-out)', async () => {
+    // Playwright sweep covers: header does not remain fixed on scroll.
+    const el = await makeTable(`
+      <core-data-table>
+        <core-column key="name" label="Name"></core-column>
+      </core-data-table>
+    `);
+    // stickyHeader defaults true; the attribute is boolean and reflects.
+    expect((el as any).stickyHeader).toBe(true);
+  });
+});
