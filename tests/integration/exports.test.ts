@@ -99,3 +99,52 @@ describe('exports smoke test — every CSS subpath loads as raw text', () => {
     expect(css.default.length).toBeGreaterThan(0);
   });
 });
+
+// ── v0.8 surfaces ───────────────────────────────────────────────────────────
+
+describe('@dappcore/ui/surfaces exports', () => {
+  it('./surfaces — CoreDialog class resolves', async () => {
+    const { CoreDialog } = await import('../../src/surfaces/index');
+    expect(typeof CoreDialog).toBe('function');
+  });
+
+  it('./surfaces — CoreDrawer class resolves', async () => {
+    const { CoreDrawer } = await import('../../src/surfaces/index');
+    expect(typeof CoreDrawer).toBe('function');
+  });
+
+  it('./surfaces — CorePopover class resolves', async () => {
+    const { CorePopover } = await import('../../src/surfaces/index');
+    expect(typeof CorePopover).toBe('function');
+  });
+
+  it('./surfaces — CoreTooltip class resolves', async () => {
+    const { CoreTooltip } = await import('../../src/surfaces/index');
+    expect(typeof CoreTooltip).toBe('function');
+  });
+
+  it('./surfaces/_shared/overlay-element — CoreOverlayElement resolves', async () => {
+    const { CoreOverlayElement } = await import('../../src/surfaces/_shared/overlay-element');
+    expect(typeof CoreOverlayElement).toBe('function');
+  });
+
+  it('./surfaces/_shared/anchored-element — CoreAnchoredElement resolves', async () => {
+    const { CoreAnchoredElement } = await import('../../src/surfaces/_shared/anchored-element');
+    expect(typeof CoreAnchoredElement).toBe('function');
+  });
+
+  it('./surfaces/_shared/focus-trap — createFocusTrap resolves', async () => {
+    const { createFocusTrap } = await import('../../src/surfaces/_shared/focus-trap');
+    expect(typeof createFocusTrap).toBe('function');
+  });
+
+  it('./surfaces/_shared/anchor-position — supportsAnchorPositioning resolves', async () => {
+    const { supportsAnchorPositioning } = await import('../../src/surfaces/_shared/anchor-position');
+    expect(typeof supportsAnchorPositioning).toBe('function');
+  });
+
+  it('./surfaces/_shared/anchor-position — computePosition resolves', async () => {
+    const { computePosition } = await import('../../src/surfaces/_shared/anchor-position');
+    expect(typeof computePosition).toBe('function');
+  });
+});
