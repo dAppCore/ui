@@ -445,3 +445,95 @@ describe('<core-data-table> — density + sticky-header', () => {
     expect((el as any).stickyHeader).toBe(true);
   });
 });
+
+// ── Loading + empty + ARIA + keyboard nav ─────────────────────────────────────
+
+describe('<core-data-table> — loading + empty + ARIA + keyboard nav', () => {
+  it('loading attr shows loading overlay and dims body', async () => {
+    const el = await makeTable(`
+      <core-data-table loading>
+        <core-column key="name" label="Name"></core-column>
+      </core-data-table>
+    `);
+    const overlay = el.shadowRoot!.querySelector('[part~="loading"]');
+    expect(overlay).not.toBeNull();
+  });
+
+  it('empty state slot renders when rows is empty and loading absent', async () => {
+    const el = await makeTable(`
+      <core-data-table>
+        <core-column key="name" label="Name"></core-column>
+        <div slot="empty">Custom empty message.</div>
+      </core-data-table>
+    `);
+    (el as any).rows = [];
+    await new Promise((r) => requestAnimationFrame(r));
+    await new Promise((r) => requestAnimationFrame(r));
+    const empty = el.shadowRoot!.querySelector('[part="empty"]');
+    expect(empty).not.toBeNull();
+  });
+
+  it('table has role="table" and aria-rowcount reflecting totalRows', async () => {
+    const el = await makeTable(`
+      <core-data-table>
+        <core-column key="name" label="Name"></core-column>
+      </core-data-table>
+    `) as any;
+    el.rows = [{ name: 'A' }, { name: 'B' }, { name: 'C' }];
+    await new Promise((r) => requestAnimationFrame(r));
+    await new Promise((r) => requestAnimationFrame(r));
+    const table = el.shadowRoot!.querySelector('table[role="table"]');
+    expect(table).not.toBeNull();
+    expect(table?.getAttribute('aria-rowcount')).toBe('3');
+  });
+
+  it('sortable header cell has aria-sort reflecting current direction', async () => {
+    const el = await makeTable(`
+      <core-data-table>
+        <core-column key="name" label="Name" sortable></core-column>
+      </core-data-table>
+    `) as any;
+    el.rows = [{ name: 'Alice' }];
+    await new Promise((r) => requestAnimationFrame(r));
+    await new Promise((r) => requestAnimationFrame(r));
+    const header = el.shadowRoot!.querySelector('[part="header-cell"][data-sortable]') as HTMLElement;
+    header?.click();
+    await new Promise((r) => requestAnimationFrame(r));
+    await new Promise((r) => requestAnimationFrame(r));
+    expect(header?.getAttribute('aria-sort')).toBe('ascending');
+    header?.click();
+    await new Promise((r) => requestAnimationFrame(r));
+    await new Promise((r) => requestAnimationFrame(r));
+    expect(header?.getAttribute('aria-sort')).toBe('descending');
+  });
+
+  it('keyboard ArrowDown moves focus to next row (no throw)', async () => {
+    // Playwright sweep covers: actual focus change in real browser.
+    const el = await makeTable(`
+      <core-data-table>
+        <core-column key="name" label="Name"></core-column>
+      </core-data-table>
+    `) as any;
+    el.rows = [{ name: 'Alice' }, { name: 'Bob' }];
+    await new Promise((r) => requestAnimationFrame(r));
+    await new Promise((r) => requestAnimationFrame(r));
+    const firstRow = el.shadowRoot!.querySelector('[part~="row"]') as HTMLElement;
+    const ev = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true });
+    expect(() => firstRow?.dispatchEvent(ev)).not.toThrow();
+  });
+
+  it('keyboard Space fires toggleSelection on a row (no throw)', async () => {
+    // Playwright sweep covers: actual selection state change after Space.
+    const el = await makeTable(`
+      <core-data-table selection="multi" key-field="id">
+        <core-column key="name" label="Name"></core-column>
+      </core-data-table>
+    `) as any;
+    el.rows = [{ id: 'u1', name: 'Alice' }];
+    await new Promise((r) => requestAnimationFrame(r));
+    await new Promise((r) => requestAnimationFrame(r));
+    const firstRow = el.shadowRoot!.querySelector('[part~="row"]') as HTMLElement;
+    const ev = new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true });
+    expect(() => firstRow?.dispatchEvent(ev)).not.toThrow();
+  });
+});
