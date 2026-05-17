@@ -270,6 +270,98 @@ Density: `comfortable | cozy (default) | compact`. Select-all header checkbox wi
 
 Sticky header is on by default. Loading state: `<core-data-table loading>`. ARIA: `role="table"`, `aria-rowcount`, `aria-rowindex`, `aria-sort`, `aria-selected`. Keyboard nav: ArrowUp/Down/Home/End on rows, Space toggles selection, Enter fires `core-row-click`, Enter/Space on sortable headers triggers sort.
 
+## Tabs (v0.4)
+
+`<core-tabs>` + `<core-tab>` + `<core-tabpanel>` — W3C ARIA APG tablist pattern. Auto-wired ARIA, roving tabindex, sliding indicator, keyboard nav.
+
+### Minimal horizontal (default)
+
+```html
+<core-tabs>
+  <core-tab>General</core-tab>
+  <core-tab>Account</core-tab>
+  <core-tab>Security</core-tab>
+  <core-tabpanel>General settings here.</core-tabpanel>
+  <core-tabpanel>Account settings.</core-tabpanel>
+  <core-tabpanel>Security settings.</core-tabpanel>
+</core-tabs>
+```
+
+### Explicit for/id pairing
+
+```html
+<core-tabs>
+  <core-tab for="general">General</core-tab>
+  <core-tab for="billing" disabled>Billing</core-tab>
+  <core-tabpanel id="general">General settings.</core-tabpanel>
+  <core-tabpanel id="billing">Billing (disabled in nav).</core-tabpanel>
+</core-tabs>
+```
+
+### Vertical orientation
+
+```html
+<core-tabs orientation="vertical">
+  <core-tab>Profile</core-tab>
+  <core-tab>Preferences</core-tab>
+  <core-tabpanel>Profile content.</core-tabpanel>
+  <core-tabpanel>Preferences content.</core-tabpanel>
+</core-tabs>
+```
+
+### Manual activation
+
+```html
+<core-tabs activation="manual">
+  <core-tab>Heavy A</core-tab>
+  <core-tab>Heavy B</core-tab>
+  <core-tabpanel>Expensive panel A.</core-tabpanel>
+  <core-tabpanel>Expensive panel B.</core-tabpanel>
+</core-tabs>
+```
+
+Arrow keys move focus only. Space or Enter activates the focused tab. Best for panels with heavy content.
+
+### Disabled tabs
+
+```html
+<core-tabs>
+  <core-tab>Active</core-tab>
+  <core-tab disabled>Locked</core-tab>
+  <core-tab>Also active</core-tab>
+  <core-tabpanel>Panel one.</core-tabpanel>
+  <core-tabpanel>Locked panel.</core-tabpanel>
+  <core-tabpanel>Panel three.</core-tabpanel>
+</core-tabs>
+```
+
+Disabled tabs have `aria-disabled="true"`, are skipped in keyboard nav, and ignore clicks.
+
+### Programmatic control
+
+```ts
+const tabs = document.querySelector('core-tabs');
+
+tabs.selectedIndex;           // current index
+tabs.selectedTab;             // CoreTab | null
+tabs.selectedPanel;           // CoreTabpanel | null
+
+tabs.select(2);               // activate by index
+tabs.select(elTab);           // activate by element ref
+tabs.refresh();               // re-read children after dynamic insert
+
+tabs.addEventListener('core-tab-change', (e) => {
+  if (needsConfirm) e.preventDefault(); // block activation
+});
+```
+
+### Import
+
+```ts
+import '@dappcore/ui/tabs';                     // side-effect, registers all 3 elements
+import { CoreTabs } from '@dappcore/ui/tabs';   // typed
+```
+
 ## Design canon
 
 [RFC.md](RFC.md) — full spec including the pipe registry, component contracts, polyglot story. Read this for the why.

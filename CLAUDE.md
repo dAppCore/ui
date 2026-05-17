@@ -21,7 +21,7 @@ Templates are **valid HTML** (Flexy property preserved). A `<core-data-table>` o
 
 Mojo: no brand, but brandable with ease. Every brand selection is additive over `[data-brand="…"]`. New brands are one CSS file each.
 
-## Layer map (v0.3 — current)
+## Layer map (v0.4 — current)
 
 | Layer | Purpose |
 |---|---|
@@ -39,6 +39,7 @@ Mojo: no brand, but brandable with ease. Every brand selection is additive over 
 | `src/forms/` | Form-input Web Components. Tier 1 (v0.2): `<core-form>` (CSRF + HMAC + honeypot + idempotency), `<core-field>` (RSA-OAEP encryption). Tier 2 (v0.7): `<core-input>`, `<core-textarea>`, `<core-select>` (native inner + slotted options), `<core-checkbox>`, `<core-radio>`, `<core-radio-group>`. All v0.7 primitives extend `CoreFormElement` (Shadow DOM, full Constraint Validation surface, ElementInternals form-association). |
 | `src/surfaces/` | Overlay + anchored Web Components (v0.8). `<core-dialog>` (modal/non-modal, 5 sizes), `<core-drawer>` (4 logical sides), `<core-popover>` (12-placement anchored panel), `<core-tooltip>` (hover/focus descriptor, auto aria-describedby). Base classes: `CoreOverlayElement` (dialog+drawer), `CoreAnchoredElement` (popover+tooltip). Pure utilities: `focus-trap.ts`, `anchor-position.ts` (CSS detection probe + JS fallback geometry). |
 | `src/data-table/` | Data-presentation Web Components (v0.3). `<core-data-table>` (Shadow DOM host — sort, pagination, selection, density, sticky-header, loading/empty) + `<core-column>` (light-DOM metadata-only). Pure utilities: `_shared/sort.ts` (type-aware comparators + sortRows), `_shared/pagination.ts` (pageCount, pageSlice, pageWindow). Independent tier — no dependency on v0.5 primitives, v0.7 forms, or v0.8 surfaces. |
+| `src/tabs/` | Tabbed-interface Web Components (v0.4). `<core-tabs>` (Shadow DOM container with state, indicator, keyboard nav) + `<core-tab>` (light DOM trigger) + `<core-tabpanel>` (light DOM panel). W3C ARIA APG tablist pattern: auto-wired ARIA, roving tabindex, sliding indicator, horizontal + vertical orientation, auto + manual activation, disabled tab skipping. Independent tier — no dependency on v0.5/v0.6/v0.7/v0.8/v0.3. |
 
 ## Critical contracts
 
@@ -76,6 +77,9 @@ Mojo: no brand, but brandable with ease. Every brand selection is additive over 
 - `ag-grid-*`, `@tanstack/react-table`, `react-table`, `material-react-table` — external table libraries. v0.3 data-table is self-contained with zero deps beyond Lit. Adding an external table dep reintroduces the zero-dep contract violation.
 - `el.rows.sort()` / in-place mutation of the `rows` array inside data-table — always work on a copy via `sortRows()`. The `_originalRows` snapshot is the restoration source for the tri-state unsorted path.
 - `CSS.supports('position', 'sticky')` feature detection for sticky-header — sticky is baseline across all target browsers. Use the `[sticky-header]` attribute path and document the `max-height` requirement on the host instead.
+- `@reach/tabs`, `react-tabs`, jQuery tabs plugins, or any external tabs library — v0.4 tabs is self-contained with zero deps beyond Lit. Adding an external tabs dep reintroduces the zero-dep contract violation.
+- `_onKeydown` key check using ONLY `'Space'` string literal — real browsers send `' '` (single space character). Check for both `' '` and `'Space'` and `'Enter'` to cover browsers + happy-dom.
+- `position: sticky` on `[part="tablist"]` — sticky tablist is deferred to v0.4.1; do not add without an explicit follow-up.
 
 ## Test convention
 
