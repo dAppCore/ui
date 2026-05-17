@@ -109,6 +109,14 @@
   --core-tab-fg: var(--core-fg-2);
   --core-tab-fg-active: var(--core-brand-500);
   --core-tab-padding: 8px 16px;
+
+  /* ── Menu ── */
+  --core-menu-bg: var(--core-ink-1);
+  --core-menu-border-color: var(--core-line-2);
+  --core-menu-radius: var(--core-radius-md, 8px);
+  --core-menu-shadow: var(--core-shadow-2);
+  --core-menuitem-padding: 8px 12px;
+  --core-menuitem-bg-active: var(--core-brand-50);
 }
 
 /* ── DARK via prefers-color-scheme ── */
