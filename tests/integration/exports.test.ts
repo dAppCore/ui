@@ -175,6 +175,30 @@ describe('@dappcore/ui/tabs exports', () => {
   });
 });
 
+// ── menu (v0.9) ──────────────────────────────────────────────────────────────
+
+it('@dappcore/ui/menu barrel exports CoreMenu, CoreMenuitem, CoreMenuSeparator', async () => {
+  const mod = await import('../../src/menu/index');
+  expect(typeof mod.CoreMenu).toBe('function');
+  expect(typeof mod.CoreMenuitem).toBe('function');
+  expect(typeof mod.CoreMenuSeparator).toBe('function');
+});
+
+it('@dappcore/ui/menu/menu exports CoreMenu', async () => {
+  const mod = await import('../../src/menu/menu');
+  expect(typeof mod.CoreMenu).toBe('function');
+});
+
+it('@dappcore/ui/menu/menuitem exports CoreMenuitem', async () => {
+  const mod = await import('../../src/menu/menuitem');
+  expect(typeof mod.CoreMenuitem).toBe('function');
+});
+
+it('@dappcore/ui/menu/menu-separator exports CoreMenuSeparator', async () => {
+  const mod = await import('../../src/menu/menu-separator');
+  expect(typeof mod.CoreMenuSeparator).toBe('function');
+});
+
 // ── v0.3 data-table exports ──────────────────────────────────────────────────
 
 describe('@dappcore/ui/data-table exports', () => {

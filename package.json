@@ -1,6 +1,6 @@
 {
   "name": "@dappcore/ui",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "CoreUI — brand-neutral Web Component library and design utilities. Lit-based, light DOM, brandable via [data-brand].",
   "type": "module",
   "license": "EUPL-1.2",
@@ -57,6 +57,10 @@
     "./tokens/platform-ios": "./src/tokens/platform-ios.css",
     "./colour": "./src/colour/index.js",
     "./math": "./src/math/index.js",
+    "./menu": "./src/menu/index.js",
+    "./menu/menu": "./src/menu/menu.js",
+    "./menu/menuitem": "./src/menu/menuitem.js",
+    "./menu/menu-separator": "./src/menu/menu-separator.js",
     "./animation": "./src/animation/index.js",
     "./dom": "./src/dom/index.js",
     "./a11y": "./src/a11y/index.js",
