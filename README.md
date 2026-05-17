@@ -182,6 +182,94 @@ click. Focus restored to pre-open `activeElement` on close.
 Two abstract base classes for extension: `CoreOverlayElement` (dialog+drawer),
 `CoreAnchoredElement` (popover+tooltip).
 
+## Data table (v0.3)
+
+`<core-data-table>` + `<core-column>` — the data-presentation tier. Shadow DOM host, declarative light-DOM columns, zero deps beyond Lit.
+
+### Bare table (no sort, no pagination)
+
+```html
+<core-data-table>
+  <core-column key="name"  label="Name"></core-column>
+  <core-column key="email" label="Email"></core-column>
+</core-data-table>
+
+<script>
+  document.querySelector('core-data-table').rows = [
+    { name: 'Alice', email: 'alice@example.com' },
+    { name: 'Bob',   email: 'bob@example.com' },
+  ];
+</script>
+```
+
+### Sortable columns
+
+```html
+<core-data-table>
+  <core-column key="name"   label="Name"   sortable></core-column>
+  <core-column key="score"  label="Score"  sortable type="number" align="end"></core-column>
+  <core-column key="joined" label="Joined" sortable type="date"></core-column>
+</core-data-table>
+```
+
+Click any sortable header: tri-state cycle asc → desc → unsorted. Cancel the built-in sort by calling `event.preventDefault()` on `core-sort-change` and assigning `el.rows` from server data.
+
+### Paginated
+
+```html
+<core-data-table page-size="10">
+  <core-column key="name" label="Name" sortable></core-column>
+</core-data-table>
+```
+
+Default pagination footer: range display + prev/next + windowed page buttons. Replace entirely with `<slot name="pagination">` for custom widgets.
+
+### Multi-select + density
+
+```html
+<core-data-table
+  selection="multi"
+  page-size="25"
+  density="compact"
+  key-field="id"
+>
+  <core-column key="name"   label="Name"   sortable></core-column>
+  <core-column key="active" label="Active" type="boolean"></core-column>
+
+  <div slot="empty">No results match your filter.</div>
+</core-data-table>
+
+<script>
+  const el = document.querySelector('core-data-table');
+  el.addEventListener('core-selection-change', (e) => {
+    console.log('selected:', e.detail.selected);
+  });
+</script>
+```
+
+Density: `comfortable | cozy (default) | compact`. Select-all header checkbox with tri-state (none/some/all). `clearSelection()`, `selectAll()`, `selectNone()` methods. Direct `el.selected = new Set([...])` assignment.
+
+### Custom render per column
+
+```html
+<core-data-table key-field="id">
+  <core-column key="name"    label="Name"></core-column>
+  <core-column key="actions" label=""></core-column>
+</core-data-table>
+
+<script>
+  import { html } from 'lit';
+  document.querySelector('core-column[key="actions"]').cellRender = (row) =>
+    html`<button @click=${() => editUser(row.id)}>Edit</button>`;
+</script>
+```
+
+`column.cellRender` receives `(row, { rowIndex, columnIndex, isSelected })`. Return a Lit `TemplateResult`, a string, or `undefined` (falls back to type-aware default). Custom sort comparator: `column.sortFn = (a, b, dir) => ...`.
+
+> **Note:** The property is `cellRender` (not `render`) to avoid colliding with LitElement's render method. Spec uses `render` for ergonomics but the implementation uses `cellRender`.
+
+Sticky header is on by default. Loading state: `<core-data-table loading>`. ARIA: `role="table"`, `aria-rowcount`, `aria-rowindex`, `aria-sort`, `aria-selected`. Keyboard nav: ArrowUp/Down/Home/End on rows, Space toggles selection, Enter fires `core-row-click`, Enter/Space on sortable headers triggers sort.
+
 ## Design canon
 
 [RFC.md](RFC.md) — full spec including the pipe registry, component contracts, polyglot story. Read this for the why.

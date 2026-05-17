@@ -21,7 +21,7 @@ Templates are **valid HTML** (Flexy property preserved). A `<core-data-table>` o
 
 Mojo: no brand, but brandable with ease. Every brand selection is additive over `[data-brand="…"]`. New brands are one CSS file each.
 
-## Layer map (v0.8 — current)
+## Layer map (v0.3 — current)
 
 | Layer | Purpose |
 |---|---|
@@ -38,6 +38,7 @@ Mojo: no brand, but brandable with ease. Every brand selection is additive over 
 | `src/crypto/` | Existing — HMAC, lthnHash, UUIDv7, quasi-salt |
 | `src/forms/` | Form-input Web Components. Tier 1 (v0.2): `<core-form>` (CSRF + HMAC + honeypot + idempotency), `<core-field>` (RSA-OAEP encryption). Tier 2 (v0.7): `<core-input>`, `<core-textarea>`, `<core-select>` (native inner + slotted options), `<core-checkbox>`, `<core-radio>`, `<core-radio-group>`. All v0.7 primitives extend `CoreFormElement` (Shadow DOM, full Constraint Validation surface, ElementInternals form-association). |
 | `src/surfaces/` | Overlay + anchored Web Components (v0.8). `<core-dialog>` (modal/non-modal, 5 sizes), `<core-drawer>` (4 logical sides), `<core-popover>` (12-placement anchored panel), `<core-tooltip>` (hover/focus descriptor, auto aria-describedby). Base classes: `CoreOverlayElement` (dialog+drawer), `CoreAnchoredElement` (popover+tooltip). Pure utilities: `focus-trap.ts`, `anchor-position.ts` (CSS detection probe + JS fallback geometry). |
+| `src/data-table/` | Data-presentation Web Components (v0.3). `<core-data-table>` (Shadow DOM host — sort, pagination, selection, density, sticky-header, loading/empty) + `<core-column>` (light-DOM metadata-only). Pure utilities: `_shared/sort.ts` (type-aware comparators + sortRows), `_shared/pagination.ts` (pageCount, pageSlice, pageWindow). Independent tier — no dependency on v0.5 primitives, v0.7 forms, or v0.8 surfaces. |
 
 ## Critical contracts
 
@@ -72,6 +73,9 @@ Mojo: no brand, but brandable with ease. Every brand selection is additive over 
 - Node `Buffer` references in browser-only code — `@dappcore/ui` is browser-only; use `btoa`/`atob` directly without fallback guards.
 - `@floating-ui/*`, `popper.js`, `tippy.js`, `tether` — external positioning libraries. v0.8 uses CSS Anchor Positioning (native) + `anchor-position.ts` JS fallback. Adding an external positioning dep reintroduces the zero-dep contract violation.
 - `CSS.supports('anchor-name', ...)` for anchor positioning detection — returns true in happy-dom incorrectly. Use `supportsAnchorPositioning()` from `src/surfaces/_shared/anchor-position.ts` (probe via computed style).
+- `ag-grid-*`, `@tanstack/react-table`, `react-table`, `material-react-table` — external table libraries. v0.3 data-table is self-contained with zero deps beyond Lit. Adding an external table dep reintroduces the zero-dep contract violation.
+- `el.rows.sort()` / in-place mutation of the `rows` array inside data-table — always work on a copy via `sortRows()`. The `_originalRows` snapshot is the restoration source for the tri-state unsorted path.
+- `CSS.supports('position', 'sticky')` feature detection for sticky-header — sticky is baseline across all target browsers. Use the `[sticky-header]` attribute path and document the `max-height` requirement on the host instead.
 
 ## Test convention
 
