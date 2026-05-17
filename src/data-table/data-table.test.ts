@@ -288,3 +288,114 @@ describe('<core-data-table> — pagination footer', () => {
     expect(el.page).toBe(1);
   });
 });
+
+// ── Selection ─────────────────────────────────────────────────────────────────
+
+describe('<core-data-table> — selection', () => {
+  async function makeSelectionTable(mode: 'none' | 'single' | 'multi' = 'multi'): Promise<any> {
+    const el = await makeTable(`
+      <core-data-table selection="${mode}" key-field="id">
+        <core-column key="name" label="Name"></core-column>
+      </core-data-table>
+    `);
+    (el as any).rows = [
+      { id: 'u1', name: 'Alice' },
+      { id: 'u2', name: 'Bob' },
+      { id: 'u3', name: 'Charlie' },
+    ];
+    await new Promise((r) => requestAnimationFrame(r));
+    await new Promise((r) => requestAnimationFrame(r));
+    return el;
+  }
+
+  it('selection="none": no checkbox/radio column rendered', async () => {
+    const el = await makeSelectionTable('none');
+    const inputs = el.shadowRoot!.querySelectorAll('input[type="checkbox"], input[type="radio"]');
+    expect(inputs.length).toBe(0);
+  });
+
+  it('selection="multi": checkbox inputs rendered for each row', async () => {
+    const el = await makeSelectionTable('multi');
+    const checkboxes = el.shadowRoot!.querySelectorAll('input[type="checkbox"]');
+    expect(checkboxes.length).toBe(4);
+  });
+
+  it('selection="single": radio inputs rendered for each row', async () => {
+    const el = await makeSelectionTable('single');
+    const radios = el.shadowRoot!.querySelectorAll('input[type="radio"]');
+    expect(radios.length).toBe(3);
+  });
+
+  it('toggleSelection adds key to selected set and fires core-selection-change', async () => {
+    const el = await makeSelectionTable('multi');
+    let detail: any;
+    el.addEventListener('core-selection-change', (e: Event) => { detail = (e as CustomEvent).detail; });
+    const firstCheckbox = el.shadowRoot!.querySelector('[part="body"] input[type="checkbox"]') as HTMLInputElement;
+    firstCheckbox.checked = true;
+    firstCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
+    await new Promise((r) => requestAnimationFrame(r));
+    expect(detail).toBeDefined();
+    expect(detail.added).toContain('u1');
+    expect(detail.selected.has('u1')).toBe(true);
+  });
+
+  it('selectAll() adds all visible-page row keys and fires core-selection-change', async () => {
+    const el = await makeSelectionTable('multi');
+    let detail: any;
+    el.addEventListener('core-selection-change', (e: Event) => { detail = (e as CustomEvent).detail; });
+    el.selectAll();
+    await new Promise((r) => requestAnimationFrame(r));
+    expect(el.selected.size).toBe(3);
+    expect(detail?.added?.length).toBe(3);
+  });
+
+  it('clearSelection() empties selected set and fires core-selection-change', async () => {
+    const el = await makeSelectionTable('multi');
+    el.selectAll();
+    await new Promise((r) => requestAnimationFrame(r));
+    let detail: any;
+    el.addEventListener('core-selection-change', (e: Event) => { detail = (e as CustomEvent).detail; });
+    el.clearSelection();
+    await new Promise((r) => requestAnimationFrame(r));
+    expect(el.selected.size).toBe(0);
+    expect(detail?.removed?.length).toBe(3);
+  });
+
+  it('selected property direct assignment fires core-selection-change', async () => {
+    const el = await makeSelectionTable('multi');
+    let detail: any;
+    el.addEventListener('core-selection-change', (e: Event) => { detail = (e as CustomEvent).detail; });
+    el.selected = new Set(['u2', 'u3']);
+    await new Promise((r) => requestAnimationFrame(r));
+    expect(detail).toBeDefined();
+    expect(detail.added).toContain('u2');
+    expect(detail.added).toContain('u3');
+  });
+
+  it('rows change prunes selected keys no longer present (without preserve-selection)', async () => {
+    const el = await makeSelectionTable('multi');
+    el.selectAll();
+    await new Promise((r) => requestAnimationFrame(r));
+    (el as any).rows = [{ id: 'u1', name: 'Alice' }];
+    await new Promise((r) => requestAnimationFrame(r));
+    expect(el.selected.has('u2')).toBe(false);
+    expect(el.selected.has('u3')).toBe(false);
+    expect(el.selected.has('u1')).toBe(true);
+  });
+
+  it('preserve-selection keeps all selected keys across rows change', async () => {
+    const el = await makeTable(`
+      <core-data-table selection="multi" key-field="id" preserve-selection>
+        <core-column key="name" label="Name"></core-column>
+      </core-data-table>
+    `) as any;
+    el.rows = [{ id: 'u1', name: 'Alice' }, { id: 'u2', name: 'Bob' }];
+    await new Promise((r) => requestAnimationFrame(r));
+    el.selectAll();
+    await new Promise((r) => requestAnimationFrame(r));
+    el.rows = [{ id: 'u2', name: 'Bob' }, { id: 'u3', name: 'Charlie' }];
+    await new Promise((r) => requestAnimationFrame(r));
+    expect(el.selected.has('u1')).toBe(true);
+    expect(el.selected.has('u2')).toBe(true);
+  });
+});
