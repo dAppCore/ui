@@ -731,6 +731,7 @@ export class CoreDataTable extends LitElement {
                   return html`
                     <tr
                       part=${isSelected ? 'row row-selected' : 'row'}
+                      data-row
                       role="row"
                       tabindex="0"
                       data-index=${gi}

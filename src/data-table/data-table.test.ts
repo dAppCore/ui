@@ -217,3 +217,74 @@ describe('<core-data-table> — sort behaviour', () => {
     expect(el.getAttribute('sort-dir')).toBe('asc');
   });
 });
+
+// ── Pagination footer ─────────────────────────────────────────────────────────
+
+describe('<core-data-table> — pagination footer', () => {
+  async function makePagedTable(pageSize = 5): Promise<any> {
+    const el = await makeTable(`
+      <core-data-table page-size="${pageSize}">
+        <core-column key="name" label="Name"></core-column>
+      </core-data-table>
+    `);
+    (el as any).rows = Array.from({ length: 12 }, (_, i) => ({ name: `Row ${i + 1}` }));
+    await new Promise((r) => requestAnimationFrame(r));
+    await new Promise((r) => requestAnimationFrame(r));
+    return el;
+  }
+
+  it('pagination part renders when page-size > 0', async () => {
+    const el = await makePagedTable(5);
+    const pager = el.shadowRoot!.querySelector('[part="pagination"]');
+    expect(pager).not.toBeNull();
+  });
+
+  it('only page-size rows are visible on first page', async () => {
+    const el = await makePagedTable(5);
+    const rows = el.shadowRoot!.querySelectorAll('[data-row]');
+    expect(rows.length).toBe(5);
+  });
+
+  it('next page button advances page and fires core-page-change', async () => {
+    const el = await makePagedTable(5);
+    let detail: any;
+    el.addEventListener('core-page-change', (e: Event) => { detail = (e as CustomEvent).detail; });
+    const next = el.shadowRoot!.querySelector('button[aria-label="Next page"]') as HTMLButtonElement;
+    next?.click();
+    await new Promise((r) => requestAnimationFrame(r));
+    await new Promise((r) => requestAnimationFrame(r));
+    expect(detail).toBeDefined();
+    expect(detail.page).toBe(1);
+    expect(detail.pageSize).toBe(5);
+    expect(detail.totalRows).toBe(12);
+  });
+
+  it('prev page button is disabled on first page', async () => {
+    const el = await makePagedTable(5);
+    const prev = el.shadowRoot!.querySelector('button[aria-label="Previous page"]') as HTMLButtonElement;
+    expect(prev?.disabled).toBe(true);
+  });
+
+  it('page resets to 0 on rows change (without preserve-page)', async () => {
+    const el = await makePagedTable(5);
+    el.page = 1;
+    await new Promise((r) => requestAnimationFrame(r));
+    (el as any).rows = [{ name: 'Only One' }];
+    await new Promise((r) => requestAnimationFrame(r));
+    expect(el.page).toBe(0);
+  });
+
+  it('preserve-page keeps page index across rows change', async () => {
+    const el = await makeTable(`
+      <core-data-table page-size="5" preserve-page>
+        <core-column key="name" label="Name"></core-column>
+      </core-data-table>
+    `) as any;
+    el.rows = Array.from({ length: 12 }, (_, i) => ({ name: `Row ${i + 1}` }));
+    await new Promise((r) => requestAnimationFrame(r));
+    el.page = 1;
+    el.rows = Array.from({ length: 20 }, (_, i) => ({ name: `New ${i + 1}` }));
+    await new Promise((r) => requestAnimationFrame(r));
+    expect(el.page).toBe(1);
+  });
+});
