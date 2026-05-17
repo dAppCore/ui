@@ -117,6 +117,18 @@
   --core-menu-shadow: var(--core-shadow-2);
   --core-menuitem-padding: 8px 12px;
   --core-menuitem-bg-active: var(--core-brand-50);
+
+  /* ── Toast ── */
+  --core-toast-bg-info: var(--core-info-400);
+  --core-toast-bg-success: var(--core-success-400);
+  --core-toast-bg-warning: var(--core-warning-400);
+  --core-toast-bg-error: var(--core-danger-400);
+  --core-toast-fg: var(--core-ink-0);
+  --core-toast-radius: var(--core-radius-md, 8px);
+  --core-toast-shadow: var(--core-shadow-2);
+  --core-toast-width: 360px;
+  --core-toast-region-gap: 8px;
+  --core-toast-region-margin: 16px;
 }
 
 /* ── DARK via prefers-color-scheme ── */
