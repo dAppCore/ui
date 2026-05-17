@@ -101,6 +101,14 @@
   --core-table-cell-padding-comfortable: 12px 16px;
   --core-table-cell-padding-cozy: 8px 12px;
   --core-table-cell-padding-compact: 4px 8px;
+
+  /* ── Tabs ── */
+  --core-tabs-border-color: var(--core-line-2);
+  --core-tabs-indicator-color: var(--core-brand-500);
+  --core-tabs-indicator-thickness: 2px;
+  --core-tab-fg: var(--core-fg-2);
+  --core-tab-fg-active: var(--core-brand-500);
+  --core-tab-padding: 8px 16px;
 }
 
 /* ── DARK via prefers-color-scheme ── */
