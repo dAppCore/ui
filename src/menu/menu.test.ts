@@ -308,3 +308,94 @@ describe('<core-menu> — keyboard navigation + type-ahead', () => {
     cleanup(el);
   });
 });
+
+// ── Submenu tests ─────────────────────────────────────────────────────────
+
+describe('<core-menu> — submenu open/close', () => {
+  const WITH_SUBMENU = `
+    <core-menuitem>New file</core-menuitem>
+    <core-menuitem has-submenu>Export
+      <core-menu>
+        <core-menuitem value="pdf">As PDF</core-menuitem>
+        <core-menuitem value="html">As HTML</core-menuitem>
+      </core-menu>
+    </core-menuitem>
+    <core-menuitem>Save</core-menuitem>
+  `;
+
+  it('clicking has-submenu trigger opens the nested <core-menu> (removes hidden)', async () => {
+    const el = await makeMenu(WITH_SUBMENU);
+    const trigger = el.querySelectorAll('core-menuitem')[1] as HTMLElement;
+    const nested = trigger.querySelector('core-menu') as any;
+
+    // Nested menu starts hidden.
+    expect(nested.hasAttribute('hidden')).toBe(true);
+
+    // Click the trigger item — parent handles core-menuitem-click.
+    trigger.click();
+
+    expect(nested.hasAttribute('hidden')).toBe(false);
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    cleanup(el);
+  });
+
+  it('ArrowRight (vertical) on has-submenu item opens submenu', async () => {
+    const el = await makeMenu(WITH_SUBMENU);
+    // Focus the trigger (index 1).
+    el.focusItem(1);
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    const trigger = el.querySelectorAll('core-menuitem')[1];
+    const nested = trigger.querySelector('core-menu') as any;
+    expect(nested.hasAttribute('hidden')).toBe(false);
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    cleanup(el);
+  });
+
+  it('ArrowLeft (vertical) closes active submenu and sets aria-expanded="false"', async () => {
+    const el = await makeMenu(WITH_SUBMENU);
+    // Open the submenu first.
+    el.focusItem(1);
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    const trigger = el.querySelectorAll('core-menuitem')[1];
+    const nested = trigger.querySelector('core-menu') as any;
+    expect(nested.hasAttribute('hidden')).toBe(false);
+
+    // ArrowLeft closes it.
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+    expect(nested.hasAttribute('hidden')).toBe(true);
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    cleanup(el);
+  });
+
+  it('only one submenu open at a time — opening second closes first', async () => {
+    const el = await makeMenu(`
+      <core-menuitem has-submenu>Export
+        <core-menu>
+          <core-menuitem value="pdf">As PDF</core-menuitem>
+        </core-menu>
+      </core-menuitem>
+      <core-menuitem has-submenu>Share
+        <core-menu>
+          <core-menuitem value="email">By email</core-menuitem>
+        </core-menu>
+      </core-menuitem>
+    `);
+    // Use Array.from(el.children) — querySelectorAll('core-menuitem') returns
+    // ALL descendants (depth-first), so nested items appear between top-level
+    // triggers. el.children gives direct children only (happy-dom safe).
+    const [trigger1, trigger2] = Array.from(el.children).filter(
+      (c) => c.tagName.toLowerCase() === 'core-menuitem',
+    );
+    const [nested1, nested2] = el.querySelectorAll('core-menu core-menu');
+
+    // Open first submenu.
+    (trigger1 as HTMLElement).click();
+    expect((nested1 as Element).hasAttribute('hidden')).toBe(false);
+
+    // Open second — first should auto-close.
+    (trigger2 as HTMLElement).click();
+    expect((nested1 as Element).hasAttribute('hidden')).toBe(true);
+    expect((nested2 as Element).hasAttribute('hidden')).toBe(false);
+    cleanup(el);
+  });
+});
