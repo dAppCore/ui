@@ -289,3 +289,67 @@ describe('<core-tabs> — keyboard navigation', () => {
     cleanup(el);
   });
 });
+
+// ── Manual activation + disabled handling ────────────────────────────────
+
+describe('<core-tabs> — manual activation + disabled handling', () => {
+  it('activation="manual": ArrowRight moves focus but does NOT activate', async () => {
+    const el = await makeTabs(`
+      <core-tab>One</core-tab>
+      <core-tab>Two</core-tab>
+      <core-tab>Three</core-tab>
+      <core-tabpanel>Panel One</core-tabpanel>
+      <core-tabpanel>Panel Two</core-tabpanel>
+      <core-tabpanel>Panel Three</core-tabpanel>
+    `);
+    el.setAttribute('activation', 'manual');
+    (el as any).activation = 'manual';
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    expect(el.selectedIndex).toBe(0);
+    expect((el as any)._focusedIndex).toBe(1);
+    cleanup(el);
+  });
+
+  it('activation="manual": Space key activates the focused tab', async () => {
+    const el = await makeTabs(`
+      <core-tab>One</core-tab>
+      <core-tab>Two</core-tab>
+      <core-tabpanel>Panel One</core-tabpanel>
+      <core-tabpanel>Panel Two</core-tabpanel>
+    `);
+    el.setAttribute('activation', 'manual');
+    (el as any).activation = 'manual';
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    expect(el.selectedIndex).toBe(0);
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Space', bubbles: true }));
+    expect(el.selectedIndex).toBe(1);
+    cleanup(el);
+  });
+
+  it('preventDefault on core-tab-change blocks activation', async () => {
+    const el = await makeTabs(`
+      <core-tab>One</core-tab>
+      <core-tab>Two</core-tab>
+      <core-tabpanel>Panel One</core-tabpanel>
+      <core-tabpanel>Panel Two</core-tabpanel>
+    `);
+    el.addEventListener('core-tab-change', (e: Event) => { e.preventDefault(); });
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    expect(el.selectedIndex).toBe(0);
+    cleanup(el);
+  });
+
+  it('disabled tab is skipped in keyboard nav (ArrowRight jumps over it)', async () => {
+    const el = await makeTabs(`
+      <core-tab>One</core-tab>
+      <core-tab disabled>Two (disabled)</core-tab>
+      <core-tab>Three</core-tab>
+      <core-tabpanel>Panel One</core-tabpanel>
+      <core-tabpanel>Panel Two</core-tabpanel>
+      <core-tabpanel>Panel Three</core-tabpanel>
+    `);
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    expect(el.selectedIndex).toBe(2);
+    cleanup(el);
+  });
+});
