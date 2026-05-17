@@ -21,7 +21,7 @@ Templates are **valid HTML** (Flexy property preserved). A `<core-data-table>` o
 
 Mojo: no brand, but brandable with ease. Every brand selection is additive over `[data-brand="…"]`. New brands are one CSS file each.
 
-## Layer map (v0.9 menu — current)
+## Layer map (v0.10 toast — current)
 
 | Layer | Purpose |
 |---|---|
@@ -41,6 +41,7 @@ Mojo: no brand, but brandable with ease. Every brand selection is additive over 
 | `src/data-table/` | Data-presentation Web Components (v0.3). `<core-data-table>` (Shadow DOM host — sort, pagination, selection, density, sticky-header, loading/empty) + `<core-column>` (light-DOM metadata-only). Pure utilities: `_shared/sort.ts` (type-aware comparators + sortRows), `_shared/pagination.ts` (pageCount, pageSlice, pageWindow). Independent tier — no dependency on v0.5 primitives, v0.7 forms, or v0.8 surfaces. |
 | `src/tabs/` | Tabbed-interface Web Components (v0.4). `<core-tabs>` (Shadow DOM container with state, indicator, keyboard nav) + `<core-tab>` (light DOM trigger) + `<core-tabpanel>` (light DOM panel). W3C ARIA APG tablist pattern: auto-wired ARIA, roving tabindex, sliding indicator, horizontal + vertical orientation, auto + manual activation, disabled tab skipping. Independent tier — no dependency on v0.5/v0.6/v0.7/v0.8/v0.3. |
 | `src/menu/` | Menu Web Components (v0.9). `<core-menu>` (Shadow DOM container with state, ARIA, keyboard nav, type-ahead, submenu coordination) + `<core-menuitem>` (light DOM trigger, slots for icon/label/trailing content, disabled support) + `<core-menu-separator>` (light DOM divider). W3C ARIA menu pattern: roving tabindex, ArrowKey/Home/End/Enter/Space/Escape, single-char type-ahead with 500ms accumulator, nested submenu open/close. Independent tier — no dependency on v0.5/v0.6/v0.7/v0.8/v0.3/v0.4. |
+| `src/toast/` | Toast notification Web Components (v0.10). `<core-toast>` (Shadow DOM bubble with severity-keyed SVG icons, state machine closed→opening→open→closing, auto-dismiss timer with pause-on-hover, cancellable `core-toast-close`, fallback timer for happy-dom) + `<core-toast-region>` (Shadow DOM container with 6 corner positions, CSS `--core-toast-slide-from` per position, `column-reverse` for bottom variants, slotchange + MutationObserver dual observation) + `toast` programmatic helper (module-level singleton, lazy region creation, `isConnected` re-creation guard, 8-method `ToastAPI`). ARIA: `role="status"` info/success, `role="alert"` warning/error. Independent tier — no v0.5/v0.7/v0.8/v0.3/v0.4/v0.9 dependencies. |
 
 ## Critical contracts
 
@@ -82,6 +83,7 @@ Mojo: no brand, but brandable with ease. Every brand selection is additive over 
 - `_onKeydown` key check using ONLY `'Space'` string literal — real browsers send `' '` (single space character). Check for both `' '` and `'Space'` and `'Enter'` to cover browsers + happy-dom.
 - `position: sticky` on `[part="tablist"]` — sticky tablist is deferred to v0.4.1; do not add without an explicit follow-up.
 - `@reach/menu-button`, `react-select`, `downshift`, `headlessui` menu primitives, or any external menu library — v0.9 menu is self-contained with zero deps beyond Lit. Adding an external menu dep reintroduces the zero-dep contract violation.
+- `react-hot-toast`, `sonner`, `react-toastify`, jQuery toast plugins, or any external toast library — v0.10 toast is self-contained with zero deps beyond Lit. Adding an external toast dep reintroduces the zero-dep contract violation. All toast patterns (stack, pause-on-hover, auto-dismiss, action slot) are covered by `src/toast/`.
 
 ## Test convention
 

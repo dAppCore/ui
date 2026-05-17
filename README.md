@@ -465,6 +465,115 @@ import { CoreMenuitem } from '@dappcore/ui/menu/menuitem';
 import { CoreMenuSeparator } from '@dappcore/ui/menu/menu-separator';
 ```
 
+## Toast (v0.10)
+
+`<core-toast>` + `<core-toast-region>` + `toast` helper — notification toasts with 4 severity levels, 6 corner positions, auto-dismiss + pause-on-hover, sticky mode, action slot.
+
+### Programmatic quickstart
+
+```ts
+import { toast } from '@dappcore/ui/toast';
+
+// Severity shortcuts — singleton region created automatically in top-right
+toast.success('File saved.');
+toast.error('Upload failed.');
+toast.warning('Unsaved changes will be lost.');
+toast.info('New version available.');
+```
+
+### Severity shortcuts with options
+
+```ts
+import { toast } from '@dappcore/ui/toast';
+
+// Auto-dismiss after 3 seconds
+toast.success('Saved!', { duration: 3000 });
+
+// Sticky — must be manually dismissed
+const id = toast.error('Network error.', { duration: 0 });
+
+// Programmatic dismiss
+toast.dismiss(id);
+
+// Clear all
+toast.dismissAll();
+```
+
+### Declarative markup with `<core-toast-region>`
+
+```html
+<core-toast-region position="top-right">
+  <core-toast severity="info" duration="5000">
+    Your session expires in 5 minutes.
+  </core-toast>
+</core-toast-region>
+```
+
+### Sticky error with action button (Retry/Undo pattern)
+
+```html
+<core-toast-region position="top-right">
+  <core-toast severity="error" duration="0">
+    Upload failed.
+    <button slot="action" onclick="retryUpload()">Retry</button>
+  </core-toast>
+</core-toast-region>
+```
+
+Action button click does **not** auto-dismiss the toast — consumer handles dismiss in the click handler if desired.
+
+### Custom region position
+
+```ts
+import { toast } from '@dappcore/ui/toast';
+
+// Target a custom region by reference
+const region = document.querySelector('core-toast-region');
+toast.show('Message from bottom!', { region, severity: 'info' });
+```
+
+```html
+<!-- Six available positions -->
+<core-toast-region position="bottom-center">…</core-toast-region>
+<!-- top-left | top-center | top-right | bottom-left | bottom-center | bottom-right -->
+```
+
+Bottom regions use `flex-direction: column-reverse` so new toasts appear nearest the viewport edge and stack inward.
+
+### Custom severity icon
+
+```html
+<core-toast severity="warning" duration="0">
+  <svg slot="icon" viewBox="0 0 16 16">
+    <!-- your icon markup — inherits currentColor -->
+  </svg>
+  Custom icon warning.
+</core-toast>
+```
+
+Slot `icon` overrides the built-in severity SVG. Built-in icons: filled circle (info), checkmark circle (success), triangle (warning), × circle (error). All in `currentColor`.
+
+### ARIA summary
+
+| Severity | `role` on `[part="toast"]` | Live region |
+|---|---|---|
+| `info` | `status` | polite |
+| `success` | `status` | polite |
+| `warning` | `alert` | assertive |
+| `error` | `alert` | assertive |
+
+`<core-toast-region>` sets `role="region"` + `aria-label="Notifications"` automatically.
+
+### Import paths
+
+```ts
+import '@dappcore/ui/toast';                            // side-effect: registers both elements
+import { toast } from '@dappcore/ui/toast';             // programmatic helper
+import { CoreToast } from '@dappcore/ui/toast/toast';
+import { CoreToastRegion } from '@dappcore/ui/toast/toast-region';
+import { toast } from '@dappcore/ui/toast/toast-helper';
+```
+
 ## Design canon
 
 [RFC.md](RFC.md) — full spec including the pipe registry, component contracts, polyglot story. Read this for the why.
