@@ -139,6 +139,7 @@ export class CoreDialog extends CoreOverlayElement {
   };
 
   private _onOverlayClose = (ev: Event): void => {
+    this.removeAttribute('aria-modal');
     const detail = (ev as CustomEvent).detail ?? {};
     this.dispatchEvent(new CustomEvent('core-dialog-close', {
       bubbles: true,

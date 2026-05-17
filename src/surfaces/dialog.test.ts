@@ -157,4 +157,13 @@ describe('<core-dialog>', () => {
       el.shadowRoot!.querySelector('[role="dialog"]') !== null;
     expect(hasRole).toBe(true);
   });
+
+  it('clears aria-modal on close', async () => {
+    (el as any).show();
+    await new Promise((r) => setTimeout(r, 300));
+    expect(el.hasAttribute('aria-modal')).toBe(true);
+    (el as any).close();
+    await new Promise((r) => setTimeout(r, 300));
+    expect(el.hasAttribute('aria-modal')).toBe(false);
+  });
 });
