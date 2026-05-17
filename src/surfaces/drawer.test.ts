@@ -147,4 +147,23 @@ describe('<core-drawer>', () => {
     await new Promise((r) => setTimeout(r, 300));
     expect(el.hasAttribute('aria-modal')).toBe(false);
   });
+
+  it('fires core-drawer-cancel on ESC (cancellable)', async () => {
+    (el as any).show();
+    await new Promise((r) => setTimeout(r, 300));
+    const spy = vi.fn();
+    el.addEventListener('core-drawer-cancel', spy);
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }));
+    await nextFrame();
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('core-drawer-cancel preventDefault blocks ESC close', async () => {
+    (el as any).show();
+    await new Promise((r) => setTimeout(r, 300));
+    el.addEventListener('core-drawer-cancel', (ev) => ev.preventDefault());
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }));
+    await nextFrame();
+    expect(el.getAttribute('data-state')).toBe('open');
+  });
 });

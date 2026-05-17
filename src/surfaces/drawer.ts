@@ -23,7 +23,7 @@ export type DrawerSide = 'start' | 'end' | 'top' | 'bottom';
  *
  * Methods: show(), showModal(), close(returnValue?), toggle()
  * Properties: returnValue: string
- * Events: core-drawer-open, core-drawer-close (detail: { returnValue })
+ * Events: core-drawer-open, core-drawer-close (detail: { returnValue }), core-drawer-cancel (cancelable)
  * Slots: default (body), header, footer
  * Parts: drawer, header, body, footer
  * Vars: --core-drawer-width, --core-drawer-height, --core-drawer-bg,
@@ -121,12 +121,14 @@ export class CoreDrawer extends CoreOverlayElement {
     this.setAttribute('role', 'dialog');
     this.addEventListener('core-overlay-open', this._onOverlayOpen);
     this.addEventListener('core-overlay-close', this._onOverlayClose);
+    this.addEventListener('core-overlay-cancel', this._onOverlayCancel);
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.removeEventListener('core-overlay-open', this._onOverlayOpen);
     this.removeEventListener('core-overlay-close', this._onOverlayClose);
+    this.removeEventListener('core-overlay-cancel', this._onOverlayCancel);
   }
 
   private _onOverlayOpen = (): void => {
@@ -142,6 +144,18 @@ export class CoreDrawer extends CoreOverlayElement {
       composed: true,
       detail: { returnValue: detail.returnValue ?? this.returnValue },
     }));
+  };
+
+  private _onOverlayCancel = (ev: Event): void => {
+    const cancel = new CustomEvent('core-drawer-cancel', {
+      bubbles: true,
+      composed: true,
+      cancelable: true,
+    });
+    this.dispatchEvent(cancel);
+    if (cancel.defaultPrevented) {
+      ev.preventDefault();
+    }
   };
 
   override render() {

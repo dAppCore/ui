@@ -1,4 +1,5 @@
 // SPDX-Licence-Identifier: EUPL-1.2
+// New for @dappcore/ui v0.8 — no upstream in core/ide.
 
 /**
  * `@dappcore/ui/surfaces` — overlay + anchored Web Components.
