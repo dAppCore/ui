@@ -199,6 +199,34 @@ it('@dappcore/ui/menu/menu-separator exports CoreMenuSeparator', async () => {
   expect(typeof mod.CoreMenuSeparator).toBe('function');
 });
 
+// ── toast (v0.10) ─────────────────────────────────────────────────────────────
+
+it('@dappcore/ui/toast barrel exports CoreToast, CoreToastRegion, toast helper', async () => {
+  const mod = await import('../../src/toast/index');
+  expect(typeof mod.CoreToast).toBe('function');
+  expect(typeof mod.CoreToastRegion).toBe('function');
+  expect(typeof mod.toast).toBe('object');
+  expect(typeof mod.toast.show).toBe('function');
+});
+
+it('@dappcore/ui/toast/toast exports CoreToast', async () => {
+  const mod = await import('../../src/toast/toast');
+  expect(typeof mod.CoreToast).toBe('function');
+});
+
+it('@dappcore/ui/toast/toast-region exports CoreToastRegion', async () => {
+  const mod = await import('../../src/toast/toast-region');
+  expect(typeof mod.CoreToastRegion).toBe('function');
+});
+
+it('@dappcore/ui/toast/toast-helper exports toast object', async () => {
+  const mod = await import('../../src/toast/toast-helper');
+  expect(typeof mod.toast).toBe('object');
+  expect(typeof mod.toast.show).toBe('function');
+  expect(typeof mod.toast.dismiss).toBe('function');
+  expect(typeof mod.toast.getRegion).toBe('function');
+});
+
 // ── v0.3 data-table exports ──────────────────────────────────────────────────
 
 describe('@dappcore/ui/data-table exports', () => {

@@ -1,6 +1,6 @@
 {
   "name": "@dappcore/ui",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "CoreUI — brand-neutral Web Component library and design utilities. Lit-based, light DOM, brandable via [data-brand].",
   "type": "module",
   "license": "EUPL-1.2",
@@ -47,6 +47,10 @@
     "./tabs/tabs": "./src/tabs/tabs.js",
     "./tabs/tab": "./src/tabs/tab.js",
     "./tabs/tabpanel": "./src/tabs/tabpanel.js",
+    "./toast": "./src/toast/index.js",
+    "./toast/toast": "./src/toast/toast.js",
+    "./toast/toast-region": "./src/toast/toast-region.js",
+    "./toast/toast-helper": "./src/toast/toast-helper.js",
     "./tokens": "./src/tokens/tokens.css",
     "./tokens/index.css": "./src/tokens/index.css",
     "./tokens/tailwind": "./src/tokens/tailwind.css",
