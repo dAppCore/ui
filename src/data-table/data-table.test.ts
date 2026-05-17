@@ -1,8 +1,7 @@
 // SPDX-Licence-Identifier: EUPL-1.2
 // New for @dappcore/ui v0.3 — no upstream in core/ide.
 import { describe, it, expect, afterEach } from 'vitest';
-import './column';
-import './data-table';
+import '.';
 
 afterEach(() => {
   document.body.innerHTML = '';
