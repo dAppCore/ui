@@ -90,6 +90,17 @@
   --core-tooltip-delay-out: 0ms;
   --core-tooltip-bg: oklch(15% 0 0);
   --core-tooltip-fg: oklch(98% 0 0);
+
+  /* ── Data table ── */
+  --core-table-header-bg: var(--core-ink-2);
+  --core-table-header-fg: var(--core-fg-1);
+  --core-table-row-bg: transparent;
+  --core-table-row-bg-hover: var(--core-ink-1);
+  --core-table-row-bg-selected: color-mix(in oklch, var(--core-brand-500) 12%, transparent);
+  --core-table-border: var(--core-line-1);
+  --core-table-cell-padding-comfortable: 12px 16px;
+  --core-table-cell-padding-cozy: 8px 12px;
+  --core-table-cell-padding-compact: 4px 8px;
 }
 
 /* ── DARK via prefers-color-scheme ── */
