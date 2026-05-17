@@ -79,13 +79,13 @@
   --core-font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
   --core-font-display: var(--core-font-sans);
 
-  /* surfaces */
+  /* ── Surfaces (overlays, popovers, tooltips) ── */
   --core-overlay-duration: 200ms;
   --core-overlay-easing: cubic-bezier(0.4, 0, 0.2, 1);
   --core-overlay-backdrop: oklch(0% 0 0 / 0.5);
   --core-overlay-z-index: 100;
   --core-popover-offset: 4px;
-  --core-popover-position-area: ;
+  --core-popover-position-area: ; /* empty by design — escape hatch for consumer-supplied position-area */
   --core-tooltip-delay-in: 700ms;
   --core-tooltip-delay-out: 0ms;
   --core-tooltip-bg: oklch(15% 0 0);
