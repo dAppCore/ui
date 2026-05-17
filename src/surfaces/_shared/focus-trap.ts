@@ -31,13 +31,13 @@ const FOCUSABLE_SELECTORS = [
   'details > summary',
 ].join(',');
 
-function getFocusables(root: HTMLElement): HTMLElement[] {
+function getFocusables(root: HTMLElement | ShadowRoot): HTMLElement[] {
   return Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS)).filter(
     (el) => !el.hidden && !el.closest('[hidden]') && el.tabIndex !== -1,
   );
 }
 
-export function createFocusTrap(root: HTMLElement): FocusTrap {
+export function createFocusTrap(root: HTMLElement | ShadowRoot): FocusTrap {
   let returnFocus: Element | null = null;
   let active = false;
 

@@ -21,7 +21,7 @@ Templates are **valid HTML** (Flexy property preserved). A `<core-data-table>` o
 
 Mojo: no brand, but brandable with ease. Every brand selection is additive over `[data-brand="…"]`. New brands are one CSS file each.
 
-## Layer map (v0.7 — current)
+## Layer map (v0.8 — current)
 
 | Layer | Purpose |
 |---|---|
@@ -37,6 +37,7 @@ Mojo: no brand, but brandable with ease. Every brand selection is additive over 
 | `src/formatters/` | Existing — pipe registry + 12 built-in formatters |
 | `src/crypto/` | Existing — HMAC, lthnHash, UUIDv7, quasi-salt |
 | `src/forms/` | Form-input Web Components. Tier 1 (v0.2): `<core-form>` (CSRF + HMAC + honeypot + idempotency), `<core-field>` (RSA-OAEP encryption). Tier 2 (v0.7): `<core-input>`, `<core-textarea>`, `<core-select>` (native inner + slotted options), `<core-checkbox>`, `<core-radio>`, `<core-radio-group>`. All v0.7 primitives extend `CoreFormElement` (Shadow DOM, full Constraint Validation surface, ElementInternals form-association). |
+| `src/surfaces/` | Overlay + anchored Web Components (v0.8). `<core-dialog>` (modal/non-modal, 5 sizes), `<core-drawer>` (4 logical sides), `<core-popover>` (12-placement anchored panel), `<core-tooltip>` (hover/focus descriptor, auto aria-describedby). Base classes: `CoreOverlayElement` (dialog+drawer), `CoreAnchoredElement` (popover+tooltip). Pure utilities: `focus-trap.ts`, `anchor-position.ts` (CSS detection probe + JS fallback geometry). |
 
 ## Critical contracts
 
@@ -69,6 +70,8 @@ Mojo: no brand, but brandable with ease. Every brand selection is additive over 
 - Light DOM in v0.7 form primitives — Shadow DOM is the v0.7 contract (RFC §4 exception for slot distribution). Use `CoreFormElement` base which uses Lit's default Shadow DOM render root.
 - `private nonce` field on classes extending `LitElement` — conflicts with `HTMLElement.nonce` (CSP). Use `submissionNonce` or similar.
 - Node `Buffer` references in browser-only code — `@dappcore/ui` is browser-only; use `btoa`/`atob` directly without fallback guards.
+- `@floating-ui/*`, `popper.js`, `tippy.js`, `tether` — external positioning libraries. v0.8 uses CSS Anchor Positioning (native) + `anchor-position.ts` JS fallback. Adding an external positioning dep reintroduces the zero-dep contract violation.
+- `CSS.supports('anchor-name', ...)` for anchor positioning detection — returns true in happy-dom incorrectly. Use `supportsAnchorPositioning()` from `src/surfaces/_shared/anchor-position.ts` (probe via computed style).
 
 ## Test convention
 

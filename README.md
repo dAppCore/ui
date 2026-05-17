@@ -129,6 +129,59 @@ Icons via attribute lookup: `<core-input leading-icon="search">` resolves
 through the v0.5 icon registry. Hint and error content via `<slot name="hint">`
 and `<slot name="error">`.
 
+## Surfaces (v0.8)
+
+Four overlay Web Components — dialog, drawer, popover, tooltip:
+
+```html
+<!-- Modal dialog with header/footer slots -->
+<core-button id="delete-trigger">Delete item</core-button>
+<core-dialog modal size="md" closedby="closerequest">
+  <h2 slot="header">Confirm deletion</h2>
+  <p>This action cannot be undone.</p>
+  <div slot="footer">
+    <core-button data-core-close>Cancel</core-button>
+    <core-button onclick="this.closest('core-dialog').close('confirm')">Delete</core-button>
+  </div>
+</core-dialog>
+
+<!-- Edge drawer, end side -->
+<core-drawer modal side="end" closedby="any">
+  <h2 slot="header">Cart (3 items)</h2>
+  <!-- body content -->
+  <div slot="footer"><core-button>Checkout</core-button></div>
+</core-drawer>
+
+<!-- Anchored popover (menu) -->
+<core-button id="more-btn">More</core-button>
+<core-popover anchor="#more-btn" placement="bottom-start" offset="8">
+  <ul>
+    <li><button>Edit</button></li>
+    <li><button>Delete</button></li>
+  </ul>
+</core-popover>
+
+<!-- Hover/focus tooltip with auto aria-describedby -->
+<core-button id="save-btn" aria-label="Save">💾</core-button>
+<core-tooltip anchor="#save-btn" placement="top" delay-in="700">
+  Save (⌘S)
+</core-tooltip>
+```
+
+Shadow DOM. Platform-API-first (`<dialog>`, Popover API, CSS Anchor Positioning with
+JS fallback for Safari/Firefox). Zero deps beyond Lit.
+
+State machine (`data-state="closed|opening|open|closing"`) on all four components —
+CSS targets `:host([data-state="opening"])` for transition choreography.
+`prefers-reduced-motion` guard resets transitions to none.
+
+`closedby="any|closerequest|none"` polyfill on all surfaces. `[data-core-close]`
+close-button convention — any descendant with that attribute closes the surface on
+click. Focus restored to pre-open `activeElement` on close.
+
+Two abstract base classes for extension: `CoreOverlayElement` (dialog+drawer),
+`CoreAnchoredElement` (popover+tooltip).
+
 ## Design canon
 
 [RFC.md](RFC.md) — full spec including the pipe registry, component contracts, polyglot story. Read this for the why.
